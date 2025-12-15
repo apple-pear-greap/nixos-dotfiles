@@ -74,7 +74,6 @@
   };
 
   hardware.bluetooth.enable = true;
-  hardware.wireless.enable = true;
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
@@ -91,7 +90,7 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  services.power-profile-daemon.enable = false;
+  services.power-profiles-daemon.enable = false;
   services.thermald.enable = true;
 
   services.tlp = {
@@ -180,6 +179,8 @@
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
+    LIBVA_DRIVER_NAME = "iHD";
+    MOZ_ENABLE_WAYLAND = "1";
   };
   environment.systemPackages = with pkgs; [
     vim 

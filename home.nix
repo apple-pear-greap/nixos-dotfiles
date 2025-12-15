@@ -4,7 +4,7 @@
     imports = [
       ./shell/shell.nix
       ./editor/nvim.nix
-      ./ricing/theme.nix
+     # ./ricing/theme.nix
     ];
     home.username = "cerydra";
     home.homeDirectory = "/home/cerydra";
