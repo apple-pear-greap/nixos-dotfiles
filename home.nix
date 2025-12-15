@@ -45,6 +45,8 @@
         bbenoist.nix
         sumneko.lua
         catppuccin.catppuccin-vsc
+	github.copilot
+	github.copilot-chat
       ];
        
       userSettings = {

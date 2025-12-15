@@ -26,7 +26,7 @@
              useGlobalPkgs = true;
              useUserPackages = true;
              users.cerydra = import ./home.nix;
-             backupFileExtension = "backup";
+             backupFileExtension = "hm-bak";
           };
          }
       ];
