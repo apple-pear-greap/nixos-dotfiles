@@ -3,6 +3,7 @@
 {
     imports = [
       ./shell/shell.nix
+      ./Editor/nvim.nix
     ];
     home.username = "cerydra";
     home.homeDirectory = "/home/cerydra";
@@ -14,6 +15,7 @@
       tree
       nerd-fonts.symbols-only
       nixd
+      lua-language-server
     ];
     programs.wezterm = {
       enable = true;
@@ -40,11 +42,17 @@
       extensions = with pkgs.vscode-extensions; [
         ms-ceintl.vscode-language-pack-zh-hans
         bbenoist.nix
+        sumneko.lua
         catppuccin.catppuccin-vsc
       ];
        
       userSettings = {
         "workbench.colorTheme" = "Catppuccin Mocha";
+
+        "Lua.misc.executablePath" = "${pkgs.lua-language-server}/bin/lua-language-server";
+        "Lua.telemetry.enable" = false;
+        "Lua.workspace.checkThirdParty" = false;
+        "Lua.diagnostics.globals" = [ "vim" ];
 
         "nix.enableLanguageServer" = true;
         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
