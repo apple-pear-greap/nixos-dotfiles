@@ -3,7 +3,7 @@
 {
     imports = [
       ./shell/shell.nix
-      ./Editor/nvim.nix
+      ./editor/nvim.nix
       ./ricing/theme.nix
     ];
     home.username = "cerydra";
@@ -24,8 +24,12 @@
 
       extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
     };
-    programs.kitty = {
+    programs.bat = {
       enable = true;
+      catppuccin.enable = true;
+    };
+    programs.kitty = {
+      enable = false;
       themeFile = "Catppuccin-Mocha";
       font = {
         name = "JetBrains Mono";

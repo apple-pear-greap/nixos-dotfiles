@@ -5,7 +5,7 @@
     [ 
       ./hardware-configuration.nix
     ];
-
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -73,11 +73,50 @@
 	];
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.wireless.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-vaapi-driver
+      libvdpau-va-gl
+    ];
+  };
+
+  services.xserver.videoDrivers = [ "modesetting" ];
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+
+  services.power-profile-daemon.enable = false;
+  services.thermald.enable = true;
+
+  services.tlp = {
+    enable = true;
+    settings ={
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "powersave";
+
+      CPU_BOOST_ON_AC = "1";
+      CPU_BOOST_ON_BAT = "0";
+
+      PLATFORM_PROFILE_ON_AC = "performance";
+      PLATFORM_PROFILE_ON_BAT = "low-power";
+
+      START_CHARGE_THRESH_BAT0 = "80";
+      STOP_CHARGE_THRESH_BAT0 = "90";
+    };
+  };
+
+  zramSwap.enable = true;
+  zramSwap.algorithm = "zstd";
+  
+  services.fstrim.enable = true;
 
   # Config keyd for key map
   services.keyd = {
@@ -139,11 +178,17 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
   environment.systemPackages = with pkgs; [
     vim 
     wget
     git
     curl
+    powertop
+    intel-gpu-tools
+    libva-utils
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

@@ -10,12 +10,18 @@
         url = "github:nix-community/home-manager/release-25.11";
         inputs.nixpkgs.follows = "nixpkgs";
       };   
+      catppuccin.url = "github:catppuccin/nix";
+      nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     };
 
-    outputs = { self, nixpkgs, home-manager, ...}@inputs: {
+    outputs = { self, nixpkgs, home-manager, catppuccin, nixos-hardware, ...}@inputs: {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
        system = "x86_64-linux";
+       specialArgs = { inherit inputs; };
        modules = [
+         nixos-hardware.nixosModules.common-cpu-intel
+         nixos-hardware.nixosModules.common-pc-laptop
+         nixos-hardware.nixosModules.common-pc-laptop-ssd
          ./configuration.nix
            inputs.daeuniverse.nixosModules.dae
            inputs.daeuniverse.nixosModules.daed
@@ -25,8 +31,13 @@
            home-manager = {
              useGlobalPkgs = true;
              useUserPackages = true;
-             users.cerydra = import ./home.nix;
-             backupFileExtension = "hm-bak";
+             users.cerydra = {
+		imports = [
+		    ./home.nix
+		    catppuccin.homeManagerModules.catppuccin
+		];
+	     };
+             backupFileExtension = "bak";
           };
          }
       ];
