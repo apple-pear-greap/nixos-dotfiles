@@ -12,8 +12,8 @@
       la = "ls -A";
       l = "ls -CF";
       gs = "git status";
-      nrs = "sudo nixos-rebuild switch --flake ~/.dotfiles#$(hostname)";
-      nrr = "cd ~/.dotfiles && bash rebuild.sh";
+      nrs = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#$(hostname)";
+      nrr = "cd ~/nixos-dotfiles && bash rebuild.sh";
       cat = "bat";
     };
 

@@ -11,6 +11,7 @@
     ../../modules/services/daed.nix
     ../../modules/services/desktop.nix
     ../../modules/services/multimedia.nix
+    ../../modules/services/ssh.nix
     ../../modules/hardware/intel.nix
     ../../modules/hardware/power-management.nix
   ];
@@ -23,6 +24,9 @@
     description = "Cerydra";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
+    ];
   };
 
   # Shell configuration
