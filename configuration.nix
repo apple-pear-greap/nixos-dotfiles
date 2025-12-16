@@ -164,7 +164,6 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
        fastfetch
-       alacritty
        splayer
        localsend
        wpsoffice-cn
@@ -174,6 +173,7 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.zsh.enable = true;
+  # programs.fish.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 

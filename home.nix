@@ -17,6 +17,12 @@
       nerd-fonts.symbols-only
       nixd
       lua-language-server
+      # For nvim-treesitter: compilers & CLI
+      gcc
+      gnumake
+      tree-sitter
+      # Optional: some grammars may need Node.js when generating parsers
+      # nodejs
     ];
     programs.wezterm = {
       enable = true;

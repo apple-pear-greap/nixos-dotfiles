@@ -1,4 +1,4 @@
-  {config, pkgs, ...}:
+{config, pkgs, ...}:
 
 {
   programs.neovim = {
@@ -30,8 +30,7 @@
   };
 
   xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-./nvim;
+    source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/editor/nvim";
     recursive = true;
   };
 
