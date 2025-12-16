@@ -14,7 +14,8 @@
       btop
       bat
       tree
-      nerd-fonts.symbols-only
+      # Nerd Font with full glyph support
+      (nerd-fonts.jetbrains-mono)
       nixd
       lua-language-server
       # For nvim-treesitter: compilers & CLI
@@ -71,21 +72,22 @@
         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
 
         "editor.fontFamily" = 
-          "JetBrains Mono, Noto Sans Mono CJK SC, monospace";
+          "JetBrainsMono Nerd Font, Noto Sans Mono CJK SC, monospace";
         "editor.fontLigatures" = true;
         "editor.formatOnSave" = true;
         "editor.fontSize" = 18;
 
         "terminal.integrated.fontFamily" =
-          "JetBrains Mono, Noto Sans Mono CJK SC, monospace";
+          "JetBrainsMono Nerd Font, Noto Sans Mono CJK SC, monospace";
         "terminal.integrated.fontSize" = 16;
       };
     };
     programs.git = {
       enable = true;
-
-      userName = "Cerydra";
-      userEmail = "cerydrahysilens@qq.com";
+      settings = {
+	user.name = "Cerydra";
+	user.email = "cerydrahysilens@qq.com";
+      };
     };
 
 }
