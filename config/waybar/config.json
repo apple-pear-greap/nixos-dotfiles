@@ -9,6 +9,7 @@
     ],
     "modules-center": [],
     "modules-right": [
+        "custom/session",
         "idle_inhibitor",
         "tray",
         "bluetooth",
@@ -20,64 +21,59 @@
     "niri/workspaces": {
         "format": "{icon}",
         "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "6": "",
-            "7": "",
-            "8": "",
-            "9": "",
-            "urgent": "",
-            "active": "",
-            "default": ""
+            "active": "",
+            "urgent": "",
+            "default": ""
         },
         "on-click": "activate",
-        "all-outputs": false
+        "all-outputs": false,
+        "separate-outputs": true
     },
     "niri/window": {
         "format": "{}",
         "max-length": 40,
         "rewrite": {
-            "(.*) — Mozilla Firefox": "🌍 $1",
-            "(.*) - VSCode": "💻 $1",
             "wezterm": " 终端"
-        },
-        "separate-outputs": true
+        }
     },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
+            "activated": "",
+            "deactivated": ""
         },
         "tooltip-format-activated": "待机抑制已启用",
         "tooltip-format-deactivated": "待机抑制已禁用"
     },
-    "tray": {
-        "icon-size": 18,
-        "spacing": 8,
-        "show-passive-items": true
-    },
     "clock": {
         "interval": 1,
         "format": "{:%H:%M:%S}",
-        "format-alt": "{:%Y年%m月%d日 %A}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode": "month",
-            "mode-mon-col": 3,
-            "weeks-pos": "right",
-            "on-scroll": 1,
-            "format": {
-                "months": "<span color='#f5e0dc'><b>{}</b></span>",
-                "days": "<span color='#cdd6f4'><b>{}</b></span>",
-                "weeks": "<span color='#94e2d5'><b>W{}</b></span>",
-                "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
-                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
-            }
-        }
+        "format-alt": "{:%Y年%m月%d日 %A}"
+    },
+    "bluetooth": {
+        "format": "{icon}",
+        "format-connected": "{icon} {num_connections}",
+        "format-connected-battery": "{icon} {device_battery_percentage}%",
+        "format-disabled": "{icon}",
+        "format-off": "{icon}",
+        "format-icons": {
+            "enabled": "󰂯",
+            "disabled": "󰂲",
+            "connected": "󰂱"
+        },
+        "tooltip-format": "{controller_alias}\t{controller_address}\n状态: {status}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} 个已连接设备:\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t电量: {device_battery_percentage}%",
+        "on-click": "blueman-manager"
+    },
+    "network": {
+        "format-wifi": " {essid}",
+        "format-ethernet": "󰈀 有线",
+        "format-disconnected": "󰤭 断开",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n⬇ {bandwidthDownBytes} ⬆ {bandwidthUpBytes}",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}\n⬇ {bandwidthDownBytes} ⬆ {bandwidthUpBytes}",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "battery": {
         "states": {
@@ -86,57 +82,34 @@
             "critical": 15
         },
         "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{icon} {time}",
         "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        "tooltip-format": "{timeTo}, {power}W"
-    },
-    "network": {
-        "format-wifi": " {essid}",
-        "format-ethernet": " 有线",
-        "format-disconnected": "⚠ 断开",
-        "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n⬇ {bandwidthDownBytes} ⬆ {bandwidthUpBytes}",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}\n⬇ {bandwidthDownBytes} ⬆ {bandwidthUpBytes}",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}",
-        "on-click": "nm-connection-editor"
-    },
-    "bluetooth": {
-        "format": "",
-        "format-connected": " {num_connections}",
-        "format-connected-battery": " {device_battery_percentage}%",
-        "format-disabled": "",
-        "format-off": "",
-        "tooltip-format": "{controller_alias}\t{controller_address}\n状态: {status}",
-        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} 个已连接设备:\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t电量: {device_battery_percentage}%",
-        "on-click": "blueman-manager"
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",
-        "format-muted": " 静音",
+        "format-muted": " 静音",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
+            "headphone": "",
+            "headset": "",
             "default": [
-                "",
-                "",
-                ""
+                "",
+                "",
+                ""
             ]
         },
         "tooltip-format": "{desc}\n音量: {volume}%",
         "on-click": "pavucontrol",
         "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+    "custom/session": {
+        "format": "",
+        "tooltip": "会话菜单",
+        "interval": 0,
+        "on-click": "sh -c '~/.config/waybar/session-menu.sh'"
     }
 }

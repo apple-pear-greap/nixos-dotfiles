@@ -10,8 +10,6 @@
   # Essential packages for Niri
   environment.systemPackages = with pkgs; [
     niri
-    # Terminal emulator
-    wezterm
     # Application launcher
     fuzzel
     # Notification daemon

@@ -3,6 +3,8 @@
 
 input {
     keyboard {
+	repeat-delay 300
+	repeat-rate 35
         xkb {
             layout "us"
         }
@@ -17,6 +19,7 @@ input {
     mouse {
         accel-speed 0.2
     }
+    focus-follows-mouse max-scroll-amount="0%"
 }
 
 output "eDP-1" {
@@ -52,6 +55,7 @@ layout {
 spawn-at-startup "fcitx5"
 spawn-at-startup "mako"
 spawn-at-startup "sh" "-c" "waybar -c ~/.config/waybar/config.json -s ~/.config/waybar/style.css"
+spawn-at-startup "sh" "-c" "swaybg -i ~/Pictures/WallPapers/wall1.png"
 
 prefer-no-csd
 
@@ -89,6 +93,11 @@ animations {
 }
 
 window-rule {
+    geometry-corner-radius 8
+    clip-to-geometry true
+}
+
+window-rule {
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
     default-column-width { proportion 0.5; }
 }
@@ -98,9 +107,40 @@ window-rule {
     default-column-width { proportion 0.66667; }
 }
 
+// Float rules for popup menus and dialogs
+window-rule {
+    match app-id=r#"^.blueman-manager-wrapped$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"pavucontrol$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"nm-connection-editor$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"nm-applet$"#
+    open-floating true
+}
+
+window-rule {
+    match title=r#"Volume Control"#
+    open-floating true
+}
+
+window-rule {
+    match title=r#"Network"#
+    open-floating true
+}
+
 binds {
     // Mod key is Super/Win
-    Mod+Return { spawn "sh" "-c" "kitty"; }
+    Mod+Return { spawn "sh" "-c" "wezterm"; }
     Mod+D { spawn "fuzzel"; }
     Mod+Q { close-window; }
     
@@ -148,6 +188,9 @@ binds {
     // System
     Mod+Shift+E { quit; }
     Mod+Shift+P { power-off-monitors; }
+    Mod+Ctrl+L { spawn "swaylock" "-f" "-c" "000000"; }
+    Mod+Ctrl+S { spawn "sh" "-c" "swaylock -f -c 000000 && systemctl suspend"; }
+    Mod+Ctrl+H { spawn "sh" "-c" "swaylock -f -c 000000 && systemctl hibernate"; }
     
     // Show hotkey overlay
     Mod+Slash { show-hotkey-overlay; }

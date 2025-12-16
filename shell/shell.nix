@@ -18,10 +18,10 @@
     };
 
     initContent = ''
-
+      export ZCOMPDUMP="''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
+      mkdir -p "''${ZCOMPDUMP%/*}"
       autoload -Uz compinit
-      compinit -u
-   
+      compinit -C -d "$ZCOMPDUMP"
     '';
   };
   programs.starship = {

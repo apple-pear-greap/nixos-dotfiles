@@ -32,6 +32,8 @@
       # === Fonts & Icons ===
       (nerd-fonts.jetbrains-mono)
       papirus-icon-theme
+      hicolor-icon-theme
+      adwaita-icon-theme
       
       # === Language Servers & Dev Tools ===
       nixd
@@ -45,9 +47,19 @@
     ];
     # === Terminal Emulator ===
     programs.wezterm = {
-      enable = false;
+      enable = true;
       enableZshIntegration = true;
       extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
+    };
+
+    programs.foot = {
+	enable = true;
+	settings = {
+	    main = {
+	      term = "xterm-256color";
+	      font = "JetBrains Mono:size=16";
+	    };
+	};
     };
 
     # === Niri Configuration ===
@@ -55,6 +67,9 @@
       source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/niri";
       recursive = true;
     };
+
+    # === Fuzzel Configuration (hot-reload) ===
+    xdg.configFile."fuzzel/fuzzel.ini".source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/fuzzel/fuzzel.ini";
 
     # === Waybar Configuration (hot-reload enabled) ===
     xdg.configFile."waybar" = {

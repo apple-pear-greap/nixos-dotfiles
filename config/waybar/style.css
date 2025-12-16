@@ -111,7 +111,8 @@ window#waybar {
 #network,
 #bluetooth,
 #pulseaudio,
-#idle_inhibitor {
+#idle_inhibitor,
+#custom-session {
     background-color: @mantle;
     color: @text;
     margin: 4px 4px;
@@ -170,13 +171,18 @@ window#waybar {
 }
 
 /* Idle Inhibitor */
-#idle_inhibitor {
+#idle_inhibitor,
+#custom-session {
     color: @peach;
 }
 
 #idle_inhibitor.activated {
     color: @yellow;
     background-color: @surface0;
+}
+
+#custom-session {
+    color: @red;
 }
 
 /* Audio */
