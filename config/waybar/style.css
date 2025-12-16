@@ -1,0 +1,203 @@
+/* Catppuccin Mocha Color Palette */
+@define-color base #1e1e2e;
+@define-color mantle #181825;
+@define-color crust #11111b;
+
+@define-color text #cdd6f4;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+
+@define-color overlay0 #6c7086;
+@define-color overlay1 #7f849c;
+@define-color overlay2 #9399b2;
+
+@define-color blue #89b4fa;
+@define-color lavender #b4befe;
+@define-color sapphire #74c7ec;
+@define-color sky #89dceb;
+@define-color teal #94e2d5;
+@define-color green #a6e3a1;
+@define-color yellow #f9e2af;
+@define-color peach #fab387;
+@define-color maroon #eba0ac;
+@define-color red #f38ba8;
+@define-color mauve #cba6f7;
+@define-color pink #f5c2e7;
+@define-color flamingo #f2cdcd;
+@define-color rosewater #f5e0dc;
+
+/* Global Styles */
+* {
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans CJK SC", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: @base;
+    color: @text;
+    border-top: 2px solid @surface0;
+}
+
+/* Workspaces - KDE-like virtual desktop style */
+#workspaces {
+    background-color: @mantle;
+    margin: 4px 4px 4px 8px;
+    padding: 0 4px;
+    border-radius: 8px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    margin: 2px;
+    color: @subtext0;
+    background-color: transparent;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+}
+
+#workspaces button:hover {
+    background-color: @surface0;
+    color: @text;
+}
+
+#workspaces button.active {
+    background-color: @blue;
+    color: @base;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+    color: @base;
+}
+
+/* Window Title - KDE-like application name display */
+#window {
+    background-color: @mantle;
+    color: @text;
+    margin: 4px 4px;
+    padding: 2px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* System Tray - KDE-like systray */
+#tray {
+    background-color: @mantle;
+    margin: 4px 4px;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+#tray>.passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray>.needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+/* Module Styles - KDE plasma widget inspired */
+#clock,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio,
+#idle_inhibitor {
+    background-color: @mantle;
+    color: @text;
+    margin: 4px 4px;
+    padding: 4px 14px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+#clock:hover,
+#battery:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#idle_inhibitor:hover {
+    background-color: @surface0;
+}
+
+/* Clock - Emphasis like KDE clock widget */
+#clock {
+    color: @blue;
+    font-weight: bold;
+    margin-right: 8px;
+    padding: 4px 18px;
+}
+
+/* Battery States */
+#battery.charging {
+    color: @green;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+}
+
+/* Network */
+#network {
+    color: @teal;
+}
+
+#network.disconnected {
+    color: @red;
+}
+
+/* Bluetooth */
+#bluetooth {
+    color: @blue;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: @overlay0;
+}
+
+/* Idle Inhibitor */
+#idle_inhibitor {
+    color: @peach;
+}
+
+#idle_inhibitor.activated {
+    color: @yellow;
+    background-color: @surface0;
+}
+
+/* Audio */
+#pulseaudio {
+    color: @mauve;
+}
+
+#pulseaudio.muted {
+    color: @overlay0;
+    text-decoration: line-through;
+}
+
+/* Tooltip styling */
+tooltip {
+    background-color: @surface0;
+    color: @text;
+    border: 2px solid @surface2;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+tooltip label {
+    color: @text;
+}

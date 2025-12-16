@@ -29,8 +29,9 @@
       # === Media ===
       splayer
       
-      # === Fonts ===
+      # === Fonts & Icons ===
       (nerd-fonts.jetbrains-mono)
+      papirus-icon-theme
       
       # === Language Servers & Dev Tools ===
       nixd
@@ -44,10 +45,23 @@
     ];
     # === Terminal Emulator ===
     programs.wezterm = {
-      enable = true;
+      enable = false;
       enableZshIntegration = true;
       extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
     };
+
+    # === Niri Configuration ===
+    xdg.configFile."niri" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/niri";
+      recursive = true;
+    };
+
+    # === Waybar Configuration (hot-reload enabled) ===
+    xdg.configFile."waybar" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/waybar";
+      recursive = true;
+    };
+
     # === Terminal Enhancements ===
     programs.bat = {
       enable = true;
@@ -56,7 +70,7 @@
     
     # === Terminal Emulator (disabled in favor of wezterm) ===
     programs.kitty = {
-      enable = false;
+      enable = true;
       themeFile = "Catppuccin-Mocha";
       font = {
         name = "JetBrains Mono";
@@ -68,6 +82,23 @@
       };
     };
     
+    # === GTK Theme & Icons ===
+    gtk = {
+      enable = true;
+      iconTheme = {
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
+      };
+      theme = {
+        name = "Catppuccin-Mocha-Standard-Blue-Dark";
+        package = pkgs.catppuccin-gtk.override {
+          accents = [ "blue" ];
+          size = "standard";
+          variant = "mocha";
+        };
+      };
+    };
+
     # === Version Control ===
     programs.git = {
       enable = true;

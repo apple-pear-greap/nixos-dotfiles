@@ -1,13 +1,20 @@
 { config, pkgs, ... }:
 
 {
-  # X11 and display server
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "modesetting" ];
+  # Display manager
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
 
-  # KDE Plasma Desktop Environment
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  # X11 support (optional, for compatibility)
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "modesetting" ];
+  };
+
+  # KDE Plasma Desktop Environment (can coexist with Niri)
+  # services.desktopManager.plasma6.enable = true;
 
   # Keyboard configuration
   services.xserver.xkb = {

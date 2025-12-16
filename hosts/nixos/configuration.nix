@@ -10,6 +10,7 @@
     ../../modules/core/system.nix
     ../../modules/services/daed.nix
     ../../modules/services/desktop.nix
+    ../../modules/services/niri.nix
     ../../modules/services/multimedia.nix
     ../../modules/services/ssh.nix
     ../../modules/hardware/intel.nix
