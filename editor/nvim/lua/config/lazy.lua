@@ -18,5 +18,10 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Import all plugin specs from lua/plugins/*.lua
   spec = { { import = "plugins" } },
+  performance = {
+    rtp = {
+      reset = false,
+    },
+  },
   change_detection = { notify = false },
 })

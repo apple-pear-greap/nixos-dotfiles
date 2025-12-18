@@ -40,18 +40,19 @@ layout {
     default-column-width { proportion 0.5; }
     
     focus-ring {
-        width 2
+        width 1.5
         active-color "#89b4fa"
         inactive-color "#313244"
     }
     
     border {
-        width 2
+        width 3
         active-color "#89b4fa"
         inactive-color "#313244"
     }
 }
 
+spawn-at-startup "xwayland-satellite"
 spawn-at-startup "fcitx5"
 spawn-at-startup "mako"
 spawn-at-startup "sh" "-c" "waybar -c ~/.config/waybar/config.json -s ~/.config/waybar/style.css"
@@ -101,9 +102,13 @@ window-rule {
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
     default-column-width { proportion 0.5; }
 }
+window-rule {
+    match app-id=r#"^wpsoffice$"#
+    default-column-width { proportion 0.66667; }
+}
 
 window-rule {
-    match app-id=r#"^firefox$"#
+    match app-id=r#"^google-chrome$"#
     default-column-width { proportion 0.66667; }
 }
 
@@ -138,11 +143,19 @@ window-rule {
     open-floating true
 }
 
+window-rule {
+    match app-id=r#"thunar"#
+    open-floating true
+}
+
 binds {
     // Mod key is Super/Win
     Mod+Return { spawn "sh" "-c" "wezterm"; }
     Mod+D { spawn "fuzzel"; }
-    Mod+Q { close-window; }
+    Mod+Shift+Q { close-window; }
+    Mod+W { spawn "google-chrome-stable"; }
+    Mod+T { spawn "thunar"; }
+    Mod+Shift+W { spawn "sh" "-c" "steam-run wps"; }
     
     // Screenshots
     Print { screenshot; }

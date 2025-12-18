@@ -5,12 +5,15 @@
   services.logind = {
     lidSwitch = "suspend";
     lidSwitchExternalPower = "lock";
+    lidSwitchDocked = "ignore";
     
     settings = {
       Login = {
         IdleAction = "suspend";
         IdleActionSec = "20min";
         HandlePowerKey = "poweroff";
+        # If needed, we can adjust other inhibit-related timings here
+        # InhibitDelayMaxSec = "5s";
       };
     };
   };

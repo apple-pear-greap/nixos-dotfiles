@@ -15,6 +15,7 @@
 
   # KDE Plasma Desktop Environment (can coexist with Niri)
   # services.desktopManager.plasma6.enable = true;
+  services.flatpak.enable = true;
 
   # Keyboard configuration
   services.xserver.xkb = {

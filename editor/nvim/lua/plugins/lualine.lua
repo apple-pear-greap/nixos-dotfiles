@@ -6,7 +6,6 @@ return {
         opts = {
             options = {
                 icons_enabled = true,
-                -- 自动适配 Catppuccin 主题
                 theme = "auto",
                 component_separators = { left = "", right = "" },
                 section_separators = { left = "", right = "" },

@@ -24,6 +24,7 @@
       
       # === Productivity ===
       localsend
+      steam-run
       wpsoffice-cn
       
       # === Media ===
@@ -43,7 +44,9 @@
       gcc
       gnumake
       tree-sitter
-      # nodejs  # Uncomment if needed for some parsers
+      python3Packages.pylatexenc
+      nodejs  # Uncomment if needed for some parsers
+      yarn
     ];
     # === Terminal Emulator ===
     programs.wezterm = {
@@ -122,5 +125,19 @@
 	user.email = "cerydrahysilens@qq.com";
       };
     };
+    # === pdf viewer ===
+    programs.zathura = {
+	enable = true;
+	options = {
+	    selection-clipboard = "clipboard";
+	    font = "JetBrains Mono 16";
+
+	    default-bg = "#282a36";
+	    default-fg = "#f8f8f2";
+	    statusbar-bg = "#44475a";
+	    statusbar-fg = "#f8f8f2";
+	};
+    };
+
 
 }

@@ -33,6 +33,8 @@
     blueman
     # Audio control
     pavucontrol
+    # xwayland support
+    xwayland-satellite
   ];
 
   # XDG portal for screen sharing and other desktop integration
