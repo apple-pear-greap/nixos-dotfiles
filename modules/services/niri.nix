@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
 
 {
   # Enable Niri window manager
@@ -33,8 +33,8 @@
     blueman
     # Audio control
     pavucontrol
-    # xwayland support
-    xwayland-satellite
+    # xwayland support - use unstable package to fix WeChat right-click menu
+    unstable.xwayland-satellite
   ];
 
   # XDG portal for screen sharing and other desktop integration

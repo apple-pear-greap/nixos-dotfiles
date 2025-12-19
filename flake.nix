@@ -5,6 +5,11 @@
     };
     inputs = {
       nixpkgs.url = "nixpkgs/nixos-25.11";
+      # expose an unstable channel so specific newer packages can be used
+      nixpkgs-unstable = {
+        url = "github:NixOS/nixpkgs/nixos-unstable";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       daeuniverse.url = "github:daeuniverse/flake.nix";
       home-manager = {
         url = "github:nix-community/home-manager/release-25.11";
@@ -19,7 +24,7 @@
       mkNixosConfig = { hostname, modules ? [] }:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs; unstable = inputs.nixpkgs-unstable.legacyPackages."x86_64-linux"; };
           modules = [
             ./hosts/${hostname}/configuration.nix
             inputs.daeuniverse.nixosModules.dae
