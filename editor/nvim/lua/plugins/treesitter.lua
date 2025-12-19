@@ -3,6 +3,11 @@ return {
     lazy = false,
     priority = 100,
     config = function()
+        -- 将解析器安装在可写目录，避免 Nix store 只读问题
+        local parser_dir = vim.fn.stdpath("data") .. "/treesitter"
+        vim.fn.mkdir(parser_dir, "p")
+        vim.opt.runtimepath:append(parser_dir)
+
         -- 安全检查：确保模块存在
         local ok, configs = pcall(require, "nvim-treesitter.configs")
         if not ok then
@@ -11,9 +16,13 @@ return {
         end
 
         configs.setup({
-            -- 在 NixOS 上禁用自动安装和 ensure_installed
-            auto_install = false,
-            ensure_installed = {},
+            parser_install_dir = parser_dir,
+            auto_install = true,
+            ensure_installed = {
+                "nix", "lua", "python", "c", "cpp", "javascript", "typescript",
+                "rust", "go", "bash", "json", "yaml", "toml",
+                "markdown", "markdown_inline", "latex", "html", "css", "vim",
+            },
 
             -- 启用高亮
             highlight = {

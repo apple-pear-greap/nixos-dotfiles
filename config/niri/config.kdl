@@ -1,5 +1,3 @@
-// Niri configuration
-// Documentation: https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
 
 input {
     keyboard {
@@ -108,7 +106,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^google-chrome$"#
+    match app-id=r#"^firefox$"#
     default-column-width { proportion 0.66667; }
 }
 
@@ -153,7 +151,7 @@ binds {
     Mod+Return { spawn "sh" "-c" "wezterm"; }
     Mod+D { spawn "fuzzel"; }
     Mod+Shift+Q { close-window; }
-    Mod+W { spawn "google-chrome-stable"; }
+    Mod+W { spawn "firefox"; }
     Mod+T { spawn "thunar"; }
     Mod+Shift+W { spawn "sh" "-c" "steam-run wps"; }
     

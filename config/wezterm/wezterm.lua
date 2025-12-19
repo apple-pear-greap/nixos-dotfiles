@@ -16,8 +16,8 @@ config.font = wezterm.font_with_fallback {
 config.font_size = 16
 
 -- Transparent background; works in Wayland when decorations are client-side.
-config.window_background_opacity = 0.9
-config.text_background_opacity = 1.0
+config.window_background_opacity = 0.85
+config.text_background_opacity = 0.85
 
 -- In Niri, remove client borders/titlebar to avoid double frames.
 config.window_decorations = "NONE"
@@ -33,7 +33,7 @@ config.window_padding = {
 	left = 6,
 	right = 6,
 	top = 4,
-	bottom = 4,
+	bottom = 0,
 }
 
 return config

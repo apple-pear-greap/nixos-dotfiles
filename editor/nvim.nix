@@ -13,6 +13,8 @@
         nix
         lua
         python
+        c
+        cpp
         javascript
         typescript
         rust
@@ -31,6 +33,14 @@
       render-markdown-nvim
       vim-markdown
       vimtex
+      # LSP 和自动补全
+      nvim-lspconfig
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-path
+      luasnip
+      cmp_luasnip
     ];
 
     extraPackages = with pkgs; [
@@ -42,9 +52,13 @@
       nodejs
       python3
 
+      # LSP 服务器
       lua-language-server
       nil
+      pyright
+      clang-tools
 
+      # 格式化工具
       stylua
       alejandra
       shfmt
