@@ -20,7 +20,6 @@
     # === System Utilities ===
     btop
     tree
-    fastfetch
 
     # === Productivity ===
     localsend
@@ -85,12 +84,11 @@
   # === Terminal Enhancements ===
   programs.bat = {
     enable = true;
-    catppuccin.enable = true;
   };
 
   # === Terminal Emulator (disabled in favor of wezterm) ===
   programs.kitty = {
-    enable = true;
+    enable = false;
     themeFile = "Catppuccin-Mocha";
     font = {
       name = "JetBrains Mono";
