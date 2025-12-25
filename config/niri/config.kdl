@@ -148,7 +148,7 @@ window-rule {
 
 binds {
     // Mod key is Super/Win
-    Mod+Return { spawn "sh" "-c" "wezterm"; }
+    Mod+Return { spawn "sh" "-c" "kitty"; }
     Mod+D { spawn "fuzzel"; }
     Mod+Shift+Q { close-window; }
     Mod+W { spawn "firefox"; }

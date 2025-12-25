@@ -8,12 +8,10 @@
     autosuggestion.enable = true;
 
     shellAliases = {
-      ll = "ls -alF";
-      la = "ls -A";
-      l = "ls -CF";
       gs = "git status";
       nrs = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#$(hostname)";
       cat = "bat";
+      vn = "vim ~/nixos-dotfiles/";
     };
 
     initContent = ''

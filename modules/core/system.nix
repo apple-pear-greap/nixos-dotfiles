@@ -3,6 +3,7 @@
 {
   # Networking
   networking.networkmanager.enable = true;
+  services.tailscale.enable = true;
 
   # Nix configuration
   nix.settings = {
@@ -16,6 +17,7 @@
     wget
     git
     curl
+    tailscale
   ];
 
   # Nix version

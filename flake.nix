@@ -1,30 +1,54 @@
 {
-    description = "My Nixos's flake";
-    nixConfig = {
-      extra-substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store"];
+  description = "My Nixos's flake";
+  nixConfig = {
+    extra-substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
+  };
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-25.11";
+    # expose an unstable channel so specific newer packages can be used
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    inputs = {
-      nixpkgs.url = "nixpkgs/nixos-25.11";
-      # expose an unstable channel so specific newer packages can be used
-      nixpkgs-unstable = {
-        url = "github:NixOS/nixpkgs/nixos-unstable";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      daeuniverse.url = "github:daeuniverse/flake.nix";
-      home-manager = {
-        url = "github:nix-community/home-manager/release-25.11";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };   
-      catppuccin.url = "github:catppuccin/nix";
-      nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    daeuniverse.url = "github:daeuniverse/flake.nix";
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    catppuccin.url = "github:catppuccin/nix";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+  };
 
-    outputs = { self, nixpkgs, home-manager, catppuccin, nixos-hardware, ...}@inputs: 
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      catppuccin,
+      nixos-hardware,
+      nixvim,
+      ...
+    }@inputs:
     let
-      mkNixosConfig = { hostname, modules ? [] }:
+      mkNixosConfig =
+        {
+          hostname,
+          modules ? [ ],
+        }:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; unstable = inputs.nixpkgs-unstable.legacyPackages."x86_64-linux"; };
+          specialArgs = {
+            inherit inputs;
+            unstable = inputs.nixpkgs-unstable.legacyPackages."x86_64-linux";
+          };
           modules = [
             ./hosts/${hostname}/configuration.nix
             inputs.daeuniverse.nixosModules.dae
@@ -34,16 +58,19 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
+		extraSpecialArgs = { inherit inputs; };
                 users.cerydra = {
                   imports = [
                     ./home.nix
+		    inputs.nixvim.homeManagerModules.nixvim
                     catppuccin.homeManagerModules.catppuccin
                   ];
                 };
                 backupFileExtension = "bak";
               };
             }
-          ] ++ modules;
+          ]
+          ++ modules;
         };
     in
     {
@@ -56,7 +83,7 @@
             nixos-hardware.nixosModules.common-pc-laptop-ssd
           ];
         };
-        
+
         # Template for second machine - customize as needed
         # machine2 = mkNixosConfig {
         #   hostname = "machine2";

@@ -1,0 +1,16 @@
+return { -- LaTeX 支持 "lervag/vimtex",
+    lazy = false,
+    ft = { "latex", "tex" },
+    init = function()
+        -- 使用系统已有的 zathura 查看
+        vim.g.vimtex_view_method = "zathura"
+	vim.g.vimtex_view_automatic = 1
+        -- 启用自动编译
+        vim.g.vimtex_compiler_enabled = 1
+        -- 启用行内 LaTeX 预览
+        vim.g.vimtex_syntax_enabled = 1
+	vim.g.vimtex_compiler_latexmk = {
+	    continuos = 1,
+	}
+    end,
+}

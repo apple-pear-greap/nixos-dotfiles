@@ -1,11 +1,15 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}:
+{
+
   imports = [
     ./shell/shell.nix
     ./editor/nvim.nix
     ./editor/vscode.nix
-    # ./ricing/theme.nix
+    ./firefox/firefox.nix
   ];
 
   home.username = "cerydra";
@@ -14,12 +18,12 @@
 
   home.packages = with pkgs; [
     # === Browsers ===
-    google-chrome
-    firefox
+    chromium
 
     # === System Utilities ===
     btop
     tree
+    brightnessctl
 
     # === Productivity ===
     localsend
@@ -54,14 +58,24 @@
     enableZshIntegration = true;
     extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
   };
-
-  programs.foot = {
+  programs.kitty = {
     enable = true;
+    font = {
+	size = 14;
+	name = "JetBrainsMono Nerd Font";
+    };
+    themeFile = "Catppuccin-Mocha";
     settings = {
-      main = {
-        term = "xterm-256color";
-        font = "JetBrains Mono:size=16";
-      };
+	    background_opacity = "0.8";
+	    hide_window_decorations = "yes";
+
+      scrollback_lines = 10000;
+      enable_audio_bell = false;
+      update_check_interval = 0;
+      copy_on_select = "yes";
+
+      input_delay = 3;
+      sync_to_monitor = "yes";
     };
   };
 
@@ -84,20 +98,6 @@
   # === Terminal Enhancements ===
   programs.bat = {
     enable = true;
-  };
-
-  # === Terminal Emulator (disabled in favor of wezterm) ===
-  programs.kitty = {
-    enable = false;
-    themeFile = "Catppuccin-Mocha";
-    font = {
-      name = "JetBrains Mono";
-      size = 16;
-    };
-    settings = {
-      confirm_os_window_close = 0;
-      background_opacity = "0.85";
-    };
   };
 
   # === GTK Theme & Icons ===
@@ -136,6 +136,12 @@
       default-fg = "#f8f8f2";
       statusbar-bg = "#44475a";
       statusbar-fg = "#f8f8f2";
+    };
+  };
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+	"application/pdf" = [ "org.pwmt.zathura.desktop" ];
     };
   };
 
