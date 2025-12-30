@@ -1,4 +1,4 @@
-{  pkgs, ... }:
+{  config,pkgs, ... }:
 
 {
   programs.nixvim = {
@@ -80,7 +80,6 @@
       settings = {
         picker.enable = true;
         image.enable = true;
-        explorer.enable = true;
         dashboard = {
           enable = true;
           sections = [
@@ -96,10 +95,12 @@
       enable = true;
       modules = {
         ai = {};
+        comment = {};
         surround = {};
         pairs = {};
         icons = {};
         statusline = {};
+        files = {};
       };
     };
 
@@ -107,6 +108,16 @@
     plugins.vimtex = {
       enable = true;
       settings = {
+        latexrun_options = [ "--xelatex" ];
+        compiler_method = "latexmk";
+        compiler_latexmk = {
+            options = [
+              "-xelatex"
+              "-file-line-error"
+              "-halt-on-error"
+              "-interaction=nonstopmode"
+            ];
+          };
         view_method = "zathura";
         quickfix_mode = 0;
       };
@@ -117,6 +128,7 @@
      { mode = "n"; key = "<leader>w"; action = ":w<CR>"; options.desc = "save document"; } 
      { mode = "n"; key = "<leader>q"; action = ":q<CR>"; options.desc = "quit"; } 
      { mode = "n"; key = "<ESC>"; action = ":noh<CR>"; options.desc = "clean high light"; } 
+     { mode = "n"; key = "<leader>cd"; action = ":Ex<CR>"; options.desc = "open ntre"; } 
 
 # vimtex
     {mode = "n"; key = "<leader>ll"; action = "<cmd>VimtexCompile<cr>"; options.desc = " Compile LaTeX"; }
@@ -128,7 +140,6 @@
     { mode = "n"; key = "<leader>fg"; action = ":lua Snacks.picker.git_files()<CR>"; options.desc = "Find git files";}
     { mode = "n"; key = "<leader>fr"; action = ":lua Snacks.picker.recent()<CR>"; options.desc = "Find recent files";}
     { mode = "n"; key = "<leader>/"; action = ":lua Snacks.picker.grep()<CR>"; options.desc = "grep";}
-    { mode = "n"; key = "<leader>e"; action = ":lua Snacks.explorer()<CR>"; options.desc = "Open snacks files"; }
 
 # mini.nvim
 #mini.files
@@ -139,6 +150,11 @@
      { mode = "n"; key = "<C-k>"; action = "<C-w>k"; }
      { mode = "n"; key = "<C-l>"; action = "<C-w>l"; }
     ];
+    # extraPackages = with pkgs; [
+    #  (texlive.combine {
+    #       inherit (texlive) scheme-full;
+    #    }) 
+    # ];
   };
 
   home.packages = with pkgs; [

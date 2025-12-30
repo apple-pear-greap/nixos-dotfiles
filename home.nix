@@ -21,11 +21,13 @@
     chromium
 
     # === System Utilities ===
+    cmatrix
     btop
     tree
     brightnessctl
 
     # === Productivity ===
+    kitty
     localsend
     steam-run
     wpsoffice-cn
@@ -52,33 +54,43 @@
     nodejs # Uncomment if needed for some parsers
     yarn
   ];
+  qt = {
+      enable = true;
+      platformTheme.name = "gtk";
+      style = {
+          name = "adwaita-dark";
+          package = pkgs.adwaita-qt;
+        };
+    };
+programs.dankMaterialShell = {
+    enable = true;
+  };
   # === Terminal Emulator ===
   programs.wezterm = {
-    enable = true;
+    enable = false;
     enableZshIntegration = true;
     extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
   };
-  programs.kitty = {
-    enable = true;
-    font = {
-	size = 14;
-	name = "JetBrainsMono Nerd Font";
+
+
+  programs.foot = {
+      enable = true;
+      settings = {
+          main = {
+              font = "JetBrainsMono Nerd Font:size=14";
+            };
+        };
     };
-    themeFile = "Catppuccin-Mocha";
-    settings = {
-	    background_opacity = "0.8";
-	    hide_window_decorations = "yes";
 
-      scrollback_lines = 10000;
-      enable_audio_bell = false;
-      update_check_interval = 0;
-      copy_on_select = "yes";
-
-      input_delay = 3;
-      sync_to_monitor = "yes";
+  xdg.configFile."kitty" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/kitty";
+      recursive = true;
     };
-  };
-
+# === Mango WC Configuration ===
+  xdg.configFile."mango" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/mango";
+      recursive = true;
+    };
   # === Niri Configuration ===
   xdg.configFile."niri" = {
     source = config.lib.file.mkOutOfStoreSymlink "/home/cerydra/nixos-dotfiles/config/niri";
@@ -108,13 +120,9 @@
       package = pkgs.papirus-icon-theme;
     };
     theme = {
-      name = "Catppuccin-Mocha-Standard-Blue-Dark";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "blue" ];
-        size = "standard";
-        variant = "mocha";
+        name = "Adwaita-dark";
+        package = pkgs.gnome-themes-extra;
       };
-    };
   };
 
   # === Version Control ===
@@ -144,5 +152,4 @@
 	"application/pdf" = [ "org.pwmt.zathura.desktop" ];
     };
   };
-
 }

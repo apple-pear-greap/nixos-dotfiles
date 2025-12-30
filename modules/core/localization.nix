@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   # Set your time zone
@@ -18,7 +18,4 @@
     LC_TELEPHONE = "zh_CN.UTF-8";
     LC_TIME = "zh_CN.UTF-8";
   };
-
-  # Force WPS to use Chinese UI (without changing global LANG)
-  environment.sessionVariables.WPS_LANG = "zh_CN";
 }

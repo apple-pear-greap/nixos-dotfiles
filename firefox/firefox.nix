@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   inputs,
   ...
@@ -35,6 +34,19 @@ in
         ];
 
       settings = {
+        "font.default.x-western" = "sans-serif";
+        # 具体字体家族设置 (以 Serif, Sans-Serif, Monospace 为例)
+      "font.name.serif.x-western" = "Noto Serif";
+      "font.name.sans-serif.x-western" = "Noto Sans";
+      "font.name.monospace.x-western" = "JetBrains Mono";
+      # 针对中文 (zh-CN) 的设置 (非常重要，否则中文可能还是默认字体)
+      "font.name.serif.zh-CN" = "Noto Serif CJK SC";
+      "font.name.sans-serif.zh-CN" = "Noto Sans CJK SC";
+      "font.name.monospace.zh-CN" = "Noto Sans Mono CJK SC";
+      # 设置字体大小
+      "font.size.variable.x-western" = 16;
+      "font.size.monospace.x-western" = 14;
+
         "browser.toolbars.bookmarks.visibility" = "never";
         "browses.newtabpage.activity-stream.baseAssetURL" = "";
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;

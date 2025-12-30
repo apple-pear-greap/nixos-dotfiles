@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Bluetooth
@@ -18,7 +18,7 @@
     ];
   };
 
-  # System tools
+  # System tools for power & cpu
   environment.systemPackages = with pkgs; [
     powertop
     intel-gpu-tools

@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
+  virtualisation.podman.enable = true;
+
   # Networking
   networking.networkmanager.enable = true;
   services.tailscale.enable = true;
@@ -18,6 +20,11 @@
     git
     curl
     tailscale
+    distrobox
+    librsvg
+    adwaita-icon-theme
+    papirus-icon-theme
+    kdePackages.qtsvg
   ];
 
   # Nix version

@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, ... }:
+{  pkgs, unstable, ... }:
 
 {
   # Enable Niri window manager
@@ -6,7 +6,6 @@
 
   # Display manager configuration for Niri
   services.displayManager.sessionPackages = [ pkgs.niri ];
-  
   # Essential packages for Niri
   environment.systemPackages = with pkgs; [
     niri

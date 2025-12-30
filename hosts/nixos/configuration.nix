@@ -13,7 +13,6 @@
     ../../modules/services/niri.nix
     ../../modules/services/multimedia.nix
     ../../modules/services/ssh.nix
-    ../../modules/services/power.nix
     ../../modules/hardware/intel.nix
     ../../modules/hardware/power-management.nix
   ];

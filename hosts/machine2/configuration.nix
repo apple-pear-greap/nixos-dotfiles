@@ -16,9 +16,8 @@
     ../../modules/services/desktop.nix
     ../../modules/services/multimedia.nix
     # Choose appropriate hardware modules for your machine:
-    # ../../modules/hardware/intel.nix
+    ../../modules/hardware/intel.nix
     # ../../modules/hardware/amd.nix  (you can create this)
-    ../../modules/hardware/power-management.nix
   ];
 
   networking.hostName = "nixos-machine2";

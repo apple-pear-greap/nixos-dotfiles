@@ -10,6 +10,14 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mango = {
+        url = "github:DreamMaoMao/mangowc";
+        inputs.nixpkgs.follows = "nixpkgs-unstable";
+      }; 
+    dms = {
+        url = "github:AvengeMedia/DankMaterialShell";
+        inputs.nixpkgs.follows = "nixpkgs-unstable";
+      }; 
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +31,6 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    catppuccin.url = "github:catppuccin/nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
@@ -32,16 +39,17 @@
       self,
       nixpkgs,
       home-manager,
-      catppuccin,
       nixos-hardware,
       nixvim,
+      mango,
+      dms,
       ...
     }@inputs:
     let
       mkNixosConfig =
         {
           hostname,
-          modules ? [ ],
+          modules ? [],
         }:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -51,6 +59,10 @@
           };
           modules = [
             ./hosts/${hostname}/configuration.nix
+            mango.nixosModules.mango
+            {
+                programs.mango.enable = true;
+              }
             inputs.daeuniverse.nixosModules.dae
             inputs.daeuniverse.nixosModules.daed
             home-manager.nixosModules.home-manager
@@ -61,9 +73,9 @@
 		extraSpecialArgs = { inherit inputs; };
                 users.cerydra = {
                   imports = [
+                  inputs.dms.homeModules.dankMaterialShell.default
                     ./home.nix
 		    inputs.nixvim.homeManagerModules.nixvim
-                    catppuccin.homeManagerModules.catppuccin
                   ];
                 };
                 backupFileExtension = "bak";
