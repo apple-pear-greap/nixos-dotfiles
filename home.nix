@@ -17,6 +17,7 @@
 	vimAlias = true;
 	viAlias = true;
     };
+    programs.ghostty.enable = true;
     home.file.".config/nvim".source = ./config/nvim;
     home.stateVersion = "26.05";
 

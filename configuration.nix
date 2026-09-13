@@ -6,9 +6,19 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  # boot.loader.systemd-boot.enable = true;
+  # boot.kernelPackages = pkgs.linuxPackages_6_18;
+
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_6_18;
+  boot.loader.grub = {
+      enable = true;
+      device = "nodev";
+      efiSupport = true;
+      theme = pkgs.nixos-grub2-theme;
+      splashImage = "/home/yuan/Pictures/Pictures/Wallpapers/wall1.png";
+      default = "0";
+      timeout = 3;
+    };
 
   networking.hostName = "nixos"; # Define your hostname.
 
@@ -134,7 +144,6 @@
     tree
     swaybg
     foot
-    kitty
     waybar
     rofi
     adwaita-icon-theme
@@ -154,6 +163,7 @@
     protonplus
     pavucontrol
     gamescope
+    nixos-grub2-theme
   ];
 
   fonts.packages = with pkgs; [
