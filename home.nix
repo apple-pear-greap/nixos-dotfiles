@@ -1,7 +1,8 @@
-{ config, pkgs, pkgs-unstable, ... }:
+{ inputs, config, pkgs, pkgs-unstable, ... }:
 
 {
     
+
     home.username = "yuan";
     home.homeDirectory = "/home/yuan";
     programs.git = {
@@ -11,6 +12,18 @@
 	  user.email = "cerydrahysilens@qq.com";
 	};
     };
+    imports = [
+	inputs.noctalia.homeModules.default
+	inputs.mangobar.homeManagerModules.default
+    ];
+    services.mangobar = {
+	enable = true;
+	systemdTarget = "mango.target";
+    };
+    programs.noctalia = {
+	enable = true;
+    };
+
     programs.neovim = {
 	enable = true;
 	defaultEditor = true;

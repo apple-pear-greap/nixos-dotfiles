@@ -17,8 +17,8 @@
       theme = pkgs.nixos-grub2-theme;
       splashImage = "/home/yuan/Pictures/Pictures/Wallpapers/wall1.png";
       default = "0";
-      timeout = 3;
     };
+    boot.loader.timeout = 5;
 
   networking.hostName = "nixos"; # Define your hostname.
 
@@ -182,7 +182,7 @@
 	package = pkgs-unstable.hyprland;
 	
   };
-  programs.mango.enable = false;
+  programs.mango.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes" ];
 

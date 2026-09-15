@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
@@ -24,9 +24,10 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/mnt/windows" =
-    { device = "/dev/disk/by-uuid/1A00E2BD00E29ECF";
-      fsType = "ntfs3";
+  fileSystems."/mnt/data" =
+    { device = "/dev/disk/by-uuid/f4e189dc-b770-40f3-aac6-fed3eb75abd5";
+      fsType = "ext4";
+      options = [ "defaults" "nofail" "x-systemd.automount" ];
     };
 
   swapDevices =

@@ -7,13 +7,21 @@
 	    url = "github:nix-community/home-manager/release-26.05";
 	    inputs.nixpkgs.follows = "nixpkgs";
 	};
+	noctalia = {
+	    url = "github:noctalia-dev/noctalia";
+	    inputs.nixpkgs.follows = "nixpkgs-unstable";
+	};
 	mangowc = {
 	    url = "github:mangowm/mango";
 	    inputs.nixpkgs.follows = "nixpkgs-unstable";
 	};
+    	mangobar = {
+	    url = "github:mangowm/mangobar";
+	    inputs.nixpkgs.follows = "nixpkgs-unstable";
+	};
     };
     
-    outputs = inputs @{ self, nixpkgs, nixpkgs-unstable, home-manager, mangowc, ... }: 
+    outputs = inputs @{ self, nixpkgs, nixpkgs-unstable, home-manager, mangowc, mangobar, ... }: 
 let
     system = "x86_64-linux";
     pkgs-unstable = import nixpkgs-unstable {

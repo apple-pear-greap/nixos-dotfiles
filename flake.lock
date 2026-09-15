@@ -61,6 +61,26 @@
         "type": "github"
       }
     },
+    "mangobar": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789039568,
+        "narHash": "sha256-wzQELB0I3YGcSAM7YE4qkbg241lWOkr299GFQSDVQIE=",
+        "owner": "mangowm",
+        "repo": "mangobar",
+        "rev": "55ebf575075ce3497177b68d58af89143da2bc65",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mangowm",
+        "repo": "mangobar",
+        "type": "github"
+      }
+    },
     "mangowc": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -128,12 +148,34 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789389682,
+        "narHash": "sha256-n5lAaFSofJDpBrzRks4H9moBNAOAyQ0GMnlYWSQl8uo=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "2856ec3b1b384f243770240261a11831de51a923",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "mangobar": "mangobar",
         "mangowc": "mangowc",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "noctalia": "noctalia"
       }
     },
     "scenefx": {
