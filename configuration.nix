@@ -9,6 +9,11 @@
   # boot.loader.systemd-boot.enable = true;
   # boot.kernelPackages = pkgs.linuxPackages_6_18;
 
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "nvidia-drm.fbdev=1"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+  ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
       enable = true;
@@ -89,9 +94,9 @@
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
 
-    powerManagement.enable = false;
+    powerManagement.enable = true;
     powerManagement.finegrained = false;
   };
 
