@@ -4,6 +4,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+    nix.gc.automatic = true;
+
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
@@ -145,6 +147,9 @@
  users.users.yuan = {
    isNormalUser = true;
    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+   openssh.authorizedKeys.keys =[
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
+   ];
    packages = with pkgs; [
     fastfetch
     tree
@@ -172,6 +177,8 @@
     pamixer
     gamescope
     nixos-grub2-theme
+    bluetui
+    spotify
     # sonobus
   ];
 
@@ -207,7 +214,14 @@
   # };
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+	PermitRootLogin = "no";
+	PasswordAuthentication = false;
+    };
+    openFirewall = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
