@@ -7,7 +7,7 @@
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
-  # boot.kernelPackages = pkgs.linuxPackages_6_18;
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
 
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
@@ -57,9 +57,9 @@
     type = "fcitx5";
     fcitx5.addons = with pkgs; [
       qt6Packages.fcitx5-chinese-addons
-      fcitx5-gtk             # GTK 应用支持
-      qt6Packages.fcitx5-qt  # 如果主要使用 Qt 应用，可取消注释
-      fcitx5-nord            # Nord 主题（可选）
+      fcitx5-gtk             
+      qt6Packages.fcitx5-qt
+      fcitx5-nord           
     ];
   };
   i18n.inputMethod.fcitx5.waylandFrontend = true;
@@ -79,6 +79,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
+  programs.kdeconnect.enable = true;
   services.displayManager.sddm.enable = true;
 
   # f**king nvidia
@@ -135,7 +136,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+  services.libinput.enable = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -155,6 +156,7 @@
     wl-clipboard
     nil
     lua-language-server
+    neovim
    ];
  };
 
@@ -167,8 +169,10 @@
     btop
     protonplus
     pavucontrol
+    pamixer
     gamescope
     nixos-grub2-theme
+    # sonobus
   ];
 
   fonts.packages = with pkgs; [
@@ -181,15 +185,18 @@
   ];
 
   programs.firefox.enable = true;
-  programs.hyprland = {
-	enable = true;
-	xwayland.enable = true;
-	package = pkgs-unstable.hyprland;
-	
-  };
   programs.mango.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes" ];
+  nix.settings = {
+  substituters = [
+    "https://mirrors.ustc.edu.cn/nix-channels/store"
+    "https://cache.nixos.org"
+  ];
+  trusted-public-keys = [
+    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+  ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -200,7 +207,7 @@
   # };
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

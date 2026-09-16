@@ -1,8 +1,6 @@
 { inputs, config, pkgs, pkgs-unstable, ... }:
 
 {
-    
-
     home.username = "yuan";
     home.homeDirectory = "/home/yuan";
     programs.git = {
@@ -13,25 +11,19 @@
 	};
     };
     imports = [
-	inputs.noctalia.homeModules.default
 	inputs.mangobar.homeManagerModules.default
     ];
     services.mangobar = {
 	enable = true;
 	systemdTarget = "mango.target";
     };
-    programs.noctalia = {
-	enable = true;
+
+    xdg.configFile."nvim" = {
+    	source = config.lib.file.mkOutOfStoreSymlink "/home/yuan/nixos-config/config/nvim/";
+	recursive = true;
     };
 
-    programs.neovim = {
-	enable = true;
-	defaultEditor = true;
-	vimAlias = true;
-	viAlias = true;
-    };
     programs.ghostty.enable = true;
-    home.file.".config/nvim".source = ./config/nvim;
     home.stateVersion = "26.05";
 
     programs.bash = {
