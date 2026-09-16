@@ -4,7 +4,11 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-    nix.gc.automatic = true;
+    nix.gc = {
+	automatic = true;
+	dates = "weekly";
+	options = "--delete-older-than 7d";
+    };
 
 
   # Use the systemd-boot EFI boot loader.
@@ -19,6 +23,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
       enable = true;
+      configurationLimit = 15;
       device = "nodev";
       efiSupport = true;
       theme = pkgs.nixos-grub2-theme;
