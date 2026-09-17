@@ -1,11 +1,12 @@
 local gh = function(x) return 'https://github.com/' .. x end
 
 vim.pack.add({
-    gh('Mofiqul/dracula.nvim'),
-    gh('neovim/nvim-lspconfig'),
+	gh('folke/tokyonight.nvim'),
+	gh('neovim/nvim-lspconfig'),
+	gh('stevearc/oil.nvim'),
 })
+vim.cmd [[colorscheme tokyonight-storm]]
 
-require('dracula').setup()
-vim.cmd[[colorscheme dracula]]
+vim.lsp.enable({ 'lua_ls', 'nil_ls' })
 
-vim.lsp.enable({ "nil_ls","lua_ls" })
+require('oil').setup()

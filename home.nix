@@ -1,38 +1,79 @@
 { inputs, config, pkgs, pkgs-unstable, ... }:
 
 {
-    home.username = "yuan";
-    home.homeDirectory = "/home/yuan";
-    programs.git = {
+  imports = [
+    inputs.mangobar.homeManagerModules.default
+	inputs.mangowc.hmModules.mango
+  ];
+  home.username = "yuan";
+  home.homeDirectory = "/home/yuan";
+  home.packages = with pkgs;[
+    jq
+    fastfetch
+    tree
+    swaybg
+    foot
+    rofi
+    adwaita-icon-theme
+    wl-clipboard
+    btop
+    protonplus
+    pavucontrol
+    pamixer
+    gamescope
+    bluetui
+    spotify
+  ];
+
+  wayland.windowManager.mango = {
+  	enable = true;
+  };
+
+  programs.firefox.enable = true;
+  programs.chromium = {
+    enable = true;
+  };
+  programs.git = {
     enable = true;
     settings = {
-	  user.name = "Cerydra";
-	  user.email = "cerydrahysilens@qq.com";
-	};
+      user.name = "Cerydra";
+      user.email = "cerydrahysilens@qq.com";
     };
-    imports = [
-	inputs.mangobar.homeManagerModules.default
+  };
+  services.mangobar = {
+    enable = true;
+    systemdTarget = "mango.target";
+  };
+
+  programs.neovim = {
+    enable = true;
+    sideloadInitLua = true;
+    viAlias = true;
+    vimAlias = true;
+
+    extraPackages = with pkgs; [
+      nil
+      lua-language-server
+
+      nixpkgs-fmt
+
+      gcc
+      clang
     ];
-    services.mangobar = {
-	enable = true;
-	systemdTarget = "mango.target";
+  };
+
+  xdg.configFile."nvim" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/home/yuan/nixos-config/config/nvim/";
+    recursive = true;
+  };
+
+  programs.ghostty.enable = true;
+  home.stateVersion = "26.05";
+
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      nrs = "sudo nixos-rebuild switch";
     };
-
-    xdg.configFile."nvim" = {
-    	source = config.lib.file.mkOutOfStoreSymlink "/home/yuan/nixos-config/config/nvim/";
-	recursive = true;
-    };
-
-    programs.ghostty.enable = true;
-    home.stateVersion = "26.05";
-
-    programs.bash = {
-	enable = true;
-	shellAliases = {
-	    nrs = "sudo nixos-rebuild switch";
-	};
-    };
-
-
-
+  };
 }

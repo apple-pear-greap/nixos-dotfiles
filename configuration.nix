@@ -3,6 +3,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nvidia.nix
     ];
     nix.gc = {
 	automatic = true;
@@ -15,11 +16,6 @@
   # boot.loader.systemd-boot.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_6_18;
 
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-    "nvidia-drm.fbdev=1"
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-  ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
       enable = true;
@@ -92,29 +88,6 @@
   # f**king nvidia
   nixpkgs.config.allowUnfree = true;
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-
-    powerManagement.enable = true;
-    powerManagement.finegrained = false;
-  };
-
-  hardware.nvidia.prime = {
-    offload.enable = false;
-    sync.enable = true;
-    
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:1:0:0";
-  };
 
   programs.steam = {
     enable = true;
@@ -126,17 +99,7 @@
   programs.gamemode.enable = true;
   
 
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
   services.pulseaudio.enable = false;
-  # services.pipewire.enable = lib.mkForce false;
-  # OR
   services.pipewire = {
     enable = true;
     pulse.enable = true;
@@ -156,17 +119,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
    ];
    packages = with pkgs; [
-    fastfetch
-    tree
-    swaybg
-    foot
-    waybar
-    rofi
-    adwaita-icon-theme
-    wl-clipboard
-    nil
-    lua-language-server
-    neovim
    ];
  };
 
@@ -176,14 +128,7 @@
     vim 
     wget
     git
-    btop
-    protonplus
-    pavucontrol
-    pamixer
-    gamescope
     nixos-grub2-theme
-    bluetui
-    spotify
     # sonobus
   ];
 
@@ -195,9 +140,6 @@
     nerd-fonts.jetbrains-mono
     maple-mono.NF-CN
   ];
-
-  programs.firefox.enable = true;
-  programs.mango.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes" ];
   nix.settings = {
