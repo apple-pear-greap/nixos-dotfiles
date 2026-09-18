@@ -1,36 +1,48 @@
-{ inputs, config, lib, pkgs,pkgs-unstable, ... }:
+{ inputs, config, lib, pkgs, pkgs-unstable, ... }:
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
+      inputs.mangowc.nixosModules.mango
       ./hardware-configuration.nix
       ./nvidia.nix
     ];
-    nix.gc = {
-	automatic = true;
-	dates = "weekly";
-	options = "--delete-older-than 7d";
-    };
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+  zramSwap.enable = true;
 
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
-  boot.kernelPackages = pkgs.linuxPackages_6_18;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
-      enable = true;
-      configurationLimit = 15;
-      device = "nodev";
-      efiSupport = true;
-      theme = pkgs.nixos-grub2-theme;
-      splashImage = "/home/yuan/Pictures/Pictures/Wallpapers/wall1.png";
-      default = "0";
-    };
-    boot.loader.timeout = 5;
+    enable = true;
+    configurationLimit = 15;
+    device = "nodev";
+    efiSupport = true;
+    theme = pkgs.nixos-grub2-theme;
+    splashImage = "/home/yuan/Pictures/Pictures/Wallpapers/wall1.png";
+    default = "0";
+  };
+  boot.loader.timeout = 5;
+
+# environment variables
+  environment.sessionVariables = {
+    AQ_DRM_DEVICES = "/dev/dri/intel-igpu:/dev/dri/nvidia-dgpu";
+    LIBVA_DRIVER_NAME = "iHD";
+    QT_IM_MODULE = "fcitx";
+    SDL_IM_MODULE = "fcitx";
+    GLFW_IM_MODULE = "ibus";
+    XMODIFIERS = "@im=fcitx";
+
+  };
 
   networking.hostName = "nixos"; # Define your hostname.
-
-  # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
 
   # Set your time zone.
@@ -60,9 +72,9 @@
     type = "fcitx5";
     fcitx5.addons = with pkgs; [
       qt6Packages.fcitx5-chinese-addons
-      fcitx5-gtk             
+      fcitx5-gtk
       qt6Packages.fcitx5-qt
-      fcitx5-nord           
+      fcitx5-nord
     ];
   };
   i18n.inputMethod.fcitx5.waylandFrontend = true;
@@ -71,10 +83,10 @@
     enable = true;
     keyboards = {
       default = {
-	ids = [ "*" ];
+        ids = [ "*" ];
         settings = {
-	  main = { capslock = "overload(control, esc)"; };
-	};
+          main = { capslock = "overload(control, esc)"; };
+        };
       };
     };
   };
@@ -84,6 +96,11 @@
   services.desktopManager.plasma6.enable = true;
   programs.kdeconnect.enable = true;
   services.displayManager.sddm.enable = true;
+  # programs.mango.enable = true;
+  programs.hyprland = {
+    enable = true;
+    package = pkgs-unstable.hyprland;
+  };
 
   # f**king nvidia
   nixpkgs.config.allowUnfree = true;
@@ -92,12 +109,12 @@
   programs.steam = {
     enable = true;
     extraCompatPackages = with pkgs;[
-	pkgs-unstable.dwproton-bin
-	pkgs-unstable.proton-ge-bin
+      pkgs-unstable.dwproton-bin
+      pkgs-unstable.proton-ge-bin
     ];
   };
   programs.gamemode.enable = true;
-  
+
 
   services.pulseaudio.enable = false;
   services.pipewire = {
@@ -112,20 +129,20 @@
   hardware.bluetooth.powerOnBoot = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
- users.users.yuan = {
-   isNormalUser = true;
-   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-   openssh.authorizedKeys.keys =[
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
-   ];
-   packages = with pkgs; [
-   ];
- };
+  users.users.yuan = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
+    ];
+    packages = with pkgs; [
+    ];
+  };
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
     wget
     git
     nixos-grub2-theme
@@ -141,15 +158,15 @@
     maple-mono.NF-CN
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings = {
-  substituters = [
-    "https://mirrors.ustc.edu.cn/nix-channels/store"
-    "https://cache.nixos.org"
-  ];
-  trusted-public-keys = [
-    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-  ];
+    substituters = [
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://cache.nixos.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -164,8 +181,8 @@
   services.openssh = {
     enable = true;
     settings = {
-	PermitRootLogin = "no";
-	PasswordAuthentication = false;
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
     };
     openFirewall = true;
   };

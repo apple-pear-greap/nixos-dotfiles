@@ -3,7 +3,6 @@
 {
   imports = [
     inputs.mangobar.homeManagerModules.default
-	inputs.mangowc.hmModules.mango
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
@@ -24,10 +23,10 @@
     bluetui
     spotify
   ];
-
-  wayland.windowManager.mango = {
-  	enable = true;
+  home.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
   };
+
 
   programs.firefox.enable = true;
   programs.chromium = {
@@ -45,6 +44,10 @@
     systemdTarget = "mango.target";
   };
 
+  programs.waybar = {
+    enable = true;
+    package = inputs.waybar.packages.${pkgs.system}.waybar;
+  };
   programs.neovim = {
     enable = true;
     sideloadInitLua = true;
