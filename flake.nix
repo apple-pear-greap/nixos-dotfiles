@@ -32,24 +32,33 @@
         inherit system;
         config.allowUnfree = true;
       };
+
+      mkHost = { hostname, hostPath, homePath }:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs pkgs-unstable hostname; };
+          modules = [
+            hostPath
+            chaotic.nixosModules.default
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit inputs pkgs-unstable hostname; };
+                users.yuan = import homePath;
+                backupFileExtension = "bak";
+              };
+            }
+          ];
+        };
     in
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs pkgs-unstable; };
-        modules = [
-          ./configuration.nix
-          chaotic.nixosModules.default
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit inputs pkgs-unstable; };
-              users.yuan = import ./home.nix;
-              backupFileExtension = "bak";
-            };
-          }
-        ];
+      nixosConfigurations = {
+        nixos = mkHost {
+	  hostname = "nixos";
+	  hostPath = ./configuration.nix;
+	  homePath = ./home.nix;
+	};
       };
     };
 }
