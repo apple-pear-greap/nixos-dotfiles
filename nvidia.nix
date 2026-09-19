@@ -1,4 +1,11 @@
 { pkgs, config, lib, ...}:
+let
+  myCachyKernel = pkgs.linuxPackages_cachyos.cachyOverride {
+    cachyVars = pkgs.linuxPackages_cachyos.kernel.cachyConfig.cachyVars // {
+      "_processor_opt" = "GENERIC_V3";
+    };
+  };
+in
 {
 
   services.udev.extraRules = ''
@@ -25,12 +32,15 @@
     ];
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.scx.enable = true;
+  boot.kernelPackages = myCachyKernel;
+  services.xserver.videoDrivers = ["modesetting" "nvidia"];
   hardware.nvidia = {
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = pkgs.nvidia_cachyos;
 
     powerManagement.enable = true;
     powerManagement.finegrained = false;

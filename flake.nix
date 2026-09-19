@@ -3,18 +3,16 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    waybar.url = "github:Alexays/Waybar/master";
-    waybar.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    waybar = {
+      url = "github:Alexays/Waybar/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    mangowc = {
-      url = "github:mangowm/mango";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    mangobar = {
-      url = "github:mangowm/mangobar";
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
@@ -24,9 +22,8 @@
     , nixpkgs
     , nixpkgs-unstable
     , home-manager
-    , mangowc
-    , mangobar
     , waybar
+    , chaotic
     , ...
     }:
     let
@@ -41,6 +38,7 @@
         specialArgs = { inherit inputs pkgs-unstable; };
         modules = [
           ./configuration.nix
+          chaotic.nixosModules.default
           home-manager.nixosModules.home-manager
           {
             home-manager = {

@@ -3,7 +3,6 @@
   imports =
     [
       # Include the results of the hardware scan.
-      inputs.mangowc.nixosModules.mango
       ./hardware-configuration.nix
       ./nvidia.nix
     ];
@@ -14,10 +13,9 @@
   };
   zramSwap.enable = true;
 
-
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
@@ -26,12 +24,11 @@
     device = "nodev";
     efiSupport = true;
     theme = pkgs.nixos-grub2-theme;
-    splashImage = "/home/yuan/Pictures/Pictures/Wallpapers/wall1.png";
     default = "0";
   };
   boot.loader.timeout = 5;
 
-# environment variables
+  # environment variables
   environment.sessionVariables = {
     AQ_DRM_DEVICES = "/dev/dri/intel-igpu:/dev/dri/nvidia-dgpu";
     LIBVA_DRIVER_NAME = "iHD";
@@ -39,7 +36,6 @@
     SDL_IM_MODULE = "fcitx";
     GLFW_IM_MODULE = "ibus";
     XMODIFIERS = "@im=fcitx";
-
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -94,18 +90,35 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
-  programs.kdeconnect.enable = true;
   services.displayManager.sddm.enable = true;
-  # programs.mango.enable = true;
   programs.hyprland = {
     enable = true;
     package = pkgs-unstable.hyprland;
   };
 
-  # f**king nvidia
+  programs.kdeconnect.enable = true;
+
+  # 禁用 KDE 默认的 power-profiles-daemon
+  services.power-profiles-daemon.enable = false;
+  # 启用并配置 TLP
+  services.tlp = {
+    enable = true;
+    settings = {
+      START_CHARGE_THRESH_BAT0 = 40;
+      STOP_CHARGE_THRESH_BAT0 = 85;
+
+      # --- 交流电 (AC) 性能优化 ---
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_BOOST_ON_AC = 1;
+      CPU_HWP_DYN_BOOST_ON_AC = 1;
+      PLATFORM_PROFILE_ON_AC = "performance";
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
-
-
   programs.steam = {
     enable = true;
     extraCompatPackages = with pkgs;[
@@ -120,6 +133,8 @@
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -135,8 +150,6 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
     ];
-    packages = with pkgs; [
-    ];
   };
 
   # List packages installed in system profile.
@@ -145,18 +158,34 @@
     vim
     wget
     git
+    tmux
     nixos-grub2-theme
+    nix-output-monitor
     # sonobus
   ];
 
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
+    source-han-sans
+    sarasa-gothic
+    wqy_microhei
+    wqy_zenhei
     noto-fonts-color-emoji
     fira-code
     nerd-fonts.jetbrains-mono
     maple-mono.NF-CN
   ];
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      emoji = [ "Noto Color Emoji" ];
+      # 先用拉丁字体，中文再回退到思源/苹方系，避免英文符号变宽
+      monospace = [ "JetBrainsMonoNL NF" "Maple Mono NF CN" "Noto Sans Mono" "Noto Sans Mono CJK SC" "Sarasa Mono SC" ];
+      sansSerif = [ "Noto Sans" "DejaVu Sans" "Source Han Sans SC" "Noto Sans CJK SC" ];
+      serif = [ "Noto Serif" "DejaVu Serif" "Source Han Serif SC" ];
+    };
+  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings = {

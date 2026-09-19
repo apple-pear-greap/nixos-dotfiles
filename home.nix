@@ -2,7 +2,6 @@
 
 {
   imports = [
-    inputs.mangobar.homeManagerModules.default
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
@@ -18,6 +17,7 @@
     btop
     protonplus
     pavucontrol
+    lazygit
     pamixer
     gamescope
     bluetui
@@ -39,9 +39,11 @@
       user.email = "cerydrahysilens@qq.com";
     };
   };
-  services.mangobar = {
+  programs.bash = {
     enable = true;
-    systemdTarget = "mango.target";
+    shellAliases = {
+      nrs = "sudo nixos-rebuild switch";
+    };
   };
 
   programs.waybar = {
@@ -70,13 +72,5 @@
     recursive = true;
   };
 
-  programs.ghostty.enable = true;
   home.stateVersion = "26.05";
-
-  programs.bash = {
-    enable = true;
-    shellAliases = {
-      nrs = "sudo nixos-rebuild switch";
-    };
-  };
 }
