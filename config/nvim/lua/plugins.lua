@@ -1,12 +1,16 @@
-local gh = function(x) return 'https://github.com/' .. x end
-
 vim.pack.add({
-	gh('folke/tokyonight.nvim'),
-	gh('neovim/nvim-lspconfig'),
-	gh('stevearc/oil.nvim'),
+  { src = "https://github.com/folke/tokyonight.nvim" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/xiyaowong/transparent.nvim" },
+  { src = "https://github.com/stevearc/oil.nvim" },
+  {
+    src = "https://github.com/saghen/blink.cmp",
+    version = 'v1'
+  },
 })
+require("oil").setup()
+require("lsp")
+
 vim.cmd [[colorscheme tokyonight-storm]]
-
-vim.lsp.enable({ 'lua_ls', 'nil_ls' })
-
-require('oil').setup()
+local cmp = require('blink.cmp')
+cmp.setup()
