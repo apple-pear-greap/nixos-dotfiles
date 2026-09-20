@@ -5,7 +5,9 @@
   pkgs-unstable,
   ...
 }:
-
+let
+  nvimPath = "${config.home.homeDirectory}/nix-config/config/nvim";
+in
 {
   imports = [
     ../../home-modules/yazi.nix
@@ -77,7 +79,7 @@
   };
 
   xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/home/yuan/nixos-config/config/nvim/";
+    source = config.lib.file.mkOutOfStoreSymlink nvimPath;
     recursive = true;
   };
 
