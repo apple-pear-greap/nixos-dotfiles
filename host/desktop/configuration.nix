@@ -1,17 +1,22 @@
-{ inputs, config, lib, pkgs, pkgs-unstable, ... }:
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./nvidia.nix
-      ./core.nix
-    ];
+  inputs,
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
+{
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../modules/core.nix
+    ../../modules/nvidia.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
   # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
-
 
   # environment variables
   environment.sessionVariables = {
@@ -36,16 +41,13 @@
 
   programs.kdeconnect.enable = true;
 
-  # 禁用 KDE 默认的 power-profiles-daemon
   services.power-profiles-daemon.enable = false;
-  # 启用并配置 TLP
   services.tlp = {
     enable = true;
     settings = {
       START_CHARGE_THRESH_BAT0 = 40;
       STOP_CHARGE_THRESH_BAT0 = 85;
 
-      # --- 交流电 (AC) 性能优化 ---
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
       CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
       CPU_MIN_PERF_ON_AC = 0;
@@ -58,14 +60,14 @@
 
   programs.steam = {
     enable = true;
-    extraCompatPackages = with pkgs;[
+    extraCompatPackages = with pkgs; [
       pkgs-unstable.dwproton-bin
       pkgs-unstable.proton-ge-bin
     ];
   };
   programs.gamemode.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
+  services.tailscale.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yuan = {
@@ -78,7 +80,6 @@
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -105,4 +106,3 @@
   # networking.firewall.enable = false;
 
 }
-

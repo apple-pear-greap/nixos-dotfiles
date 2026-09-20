@@ -1,11 +1,18 @@
-{ inputs, config, pkgs, pkgs-unstable, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 
 {
   imports = [
+    ../../home-modules/yazi.nix
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
-  home.packages = with pkgs;[
+  home.packages = with pkgs; [
     jq
     fastfetch
     tree
@@ -22,11 +29,11 @@
     gamescope
     bluetui
     spotify
+    pkg-config
   ];
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1";
   };
-
 
   programs.firefox.enable = true;
   programs.chromium = {
@@ -55,9 +62,11 @@
     sideloadInitLua = true;
     viAlias = true;
     vimAlias = true;
+    defaultEditor = true;
 
     extraPackages = with pkgs; [
       nil
+      clang-tools
       lua-language-server
 
       nixpkgs-fmt

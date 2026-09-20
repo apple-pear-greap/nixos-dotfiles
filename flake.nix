@@ -18,13 +18,14 @@
   };
 
   outputs =
-    inputs @{ self
-    , nixpkgs
-    , nixpkgs-unstable
-    , home-manager
-    , waybar
-    , chaotic
-    , ...
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      waybar,
+      chaotic,
+      ...
     }:
     let
       system = "x86_64-linux";
@@ -33,7 +34,12 @@
         config.allowUnfree = true;
       };
 
-      mkHost = { hostname, hostPath, homePath }:
+      mkHost =
+        {
+          hostname,
+          hostPath,
+          homePath,
+        }:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs pkgs-unstable hostname; };
           modules = [
@@ -55,10 +61,10 @@
     {
       nixosConfigurations = {
         nixos = mkHost {
-	  hostname = "nixos";
-	  hostPath = ./configuration.nix;
-	  homePath = ./home.nix;
-	};
+          hostname = "nixos";
+          hostPath = ./host/desktop/configuration.nix;
+          homePath = ./host/desktop/home.nix;
+        };
       };
     };
 }
