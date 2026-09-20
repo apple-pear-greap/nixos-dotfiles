@@ -65,6 +65,11 @@
           hostPath = ./host/desktop/configuration.nix;
           homePath = ./host/desktop/home.nix;
         };
+        nixos-btw = mkHost {
+	  hostname = "nixos-btw";
+          hostPath = ./host/mobile/configuration.nix;
+          homePath = ./host/mobile/home.nix;
+	};
       };
     };
 }

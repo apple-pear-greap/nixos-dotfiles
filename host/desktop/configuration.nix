@@ -75,6 +75,7 @@
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlpSnpK/ZKhqcGP3ibhlQjJI76udTF7bfiuupjp5P1F yoko64946@gmail.com"
     ];
   };
 
