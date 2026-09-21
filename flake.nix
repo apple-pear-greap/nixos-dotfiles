@@ -15,6 +15,7 @@
       url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    daeuniverse.url = "github:daeuniverse/flake.nix";
   };
 
   outputs =
@@ -66,10 +67,10 @@
           homePath = ./host/desktop/home.nix;
         };
         nixos-btw = mkHost {
-	  hostname = "nixos-btw";
+          hostname = "nixos-btw";
           hostPath = ./host/mobile/configuration.nix;
           homePath = ./host/mobile/home.nix;
-	};
+        };
       };
     };
 }
