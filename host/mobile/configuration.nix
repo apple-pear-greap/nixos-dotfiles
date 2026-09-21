@@ -11,10 +11,19 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/core.nix
+    ../../modules/intel.nix
     inputs.daeuniverse.nixosModules.daed
   ];
 
   networking.hostName = "nixos-btw"; # Define your hostname.
+
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+    QT_IM_MODULE = "fcitx";
+    SDL_IM_MODULE = "fcitx";
+    GLFW_IM_MODULE = "ibus";
+    XMODIFIERS = "@im=fcitx";
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;

@@ -16,6 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     daeuniverse.url = "github:daeuniverse/flake.nix";
+    helium-flake = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
