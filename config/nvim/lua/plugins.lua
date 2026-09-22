@@ -10,6 +10,7 @@ require("oil").setup()
 require("lsp")
 
 vim.cmd [[colorscheme tokyonight-storm]]
+
 local cmp = require('blink.cmp')
 -- cmp.build():pwait()
 cmp.setup()
