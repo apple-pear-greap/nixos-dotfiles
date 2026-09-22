@@ -1,0 +1,25 @@
+;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
+(setq confirm-kill-emacs #'yes-or-no-p)
+(electric-pair-mode t)
+(add-hook 'prog-mode-hook #'show-paren-mode)
+(column-number-mode t)
+(tool-bar-mode -1)
+
+(global-display-line-numbers-mode 1)
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+;; plugins
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t))
+
+(provide 'init)
+;;; init.el ends here
