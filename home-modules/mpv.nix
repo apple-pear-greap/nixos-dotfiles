@@ -3,6 +3,7 @@
   programs.mpv = {
     enable = true;
 
+    package = pkgs.mpv.override { youtubeSupport = false; };
     config = {
       # hardware encoding
       hwdec = "auto";
@@ -12,12 +13,14 @@
       profile = "gpu-hq";
       # Youtube
       ytdl-format = "bestvideo+bestaudio/best";
+      ytdl-raw-options = [
+        "cookies-from-browser=firefox" # 或指定文件：cookies=/path/to/cookies.txt
+      ];
 
       cache = "yes";
-      cache-default = 400000;
     };
-    home.packages = with pkgs; [
-      yt-dlp
-    ];
   };
+  home.packages = with pkgs; [
+    yt-dlp
+  ];
 }

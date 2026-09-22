@@ -12,6 +12,10 @@ let
     rofi = "rofi";
     foot = "foot";
     sway = "sway";
+    hypr = "hypr";
+    mango = "mango";
+    tmux = "tmux";
+    emacs = "emacs";
   };
 in
 {
@@ -25,9 +29,7 @@ in
   };
 
   programs.firefox.enable = true;
-  programs.chromium = {
-    enable = true;
-  };
+
   programs.git = {
     enable = true;
     settings = {
@@ -61,6 +63,11 @@ in
       gcc
       clang
     ];
+  };
+
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs-gtk;
   };
 
   programs.helium = {
