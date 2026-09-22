@@ -13,6 +13,7 @@
     ../../modules/core.nix
     ../../modules/intel.nix
     inputs.daeuniverse.nixosModules.daed
+    inputs.mangowm.nixosModules.mango
   ];
 
   networking.hostName = "nixos-btw"; # Define your hostname.
@@ -27,12 +28,15 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.displayManager.lightdm.enable = true;
+  services.displayManager.ly.enable = true;
   programs.sway = {
     enable = true;
     package = pkgs.swayfx;
   };
+  programs.mango.enable = true;
 
+  services.blueman.enable = true;
   powerManagement.enable = true;
   services.power-profiles-daemon.enable = false;
   services.tlp = {
