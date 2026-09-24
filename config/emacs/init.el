@@ -1,5 +1,5 @@
 ;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
-(setq confirm-kill-emacs #'yes-or-no-p)
+(setq confirm-kill-emacs #'y-or-n-p)
 (electric-pair-mode t)
 (add-hook 'prog-mode-hook #'show-paren-mode)
 (column-number-mode t)
