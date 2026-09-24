@@ -1,11 +1,22 @@
-{ inputs, config, lib , pkgs, pkgs-unstable, ...}:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 {
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+    priority = 5;
+  };
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
@@ -56,7 +67,9 @@
       default = {
         ids = [ "*" ];
         settings = {
-          main = { capslock = "overload(control, esc)"; };
+          main = {
+            capslock = "overload(control, esc)";
+          };
         };
       };
     };
@@ -104,13 +117,31 @@
     defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
       # 先用拉丁字体，中文再回退到思源/苹方系，避免英文符号变宽
-      monospace = [ "JetBrainsMonoNL NF" "Maple Mono NF CN" "Noto Sans Mono" "Noto Sans Mono CJK SC" "Sarasa Mono SC" ];
-      sansSerif = [ "Noto Sans" "DejaVu Sans" "Source Han Sans SC" "Noto Sans CJK SC" ];
-      serif = [ "Noto Serif" "DejaVu Serif" "Source Han Serif SC" ];
+      monospace = [
+        "JetBrainsMonoNL NF"
+        "Maple Mono NF CN"
+        "Noto Sans Mono"
+        "Noto Sans Mono CJK SC"
+        "Sarasa Mono SC"
+      ];
+      sansSerif = [
+        "Noto Sans"
+        "DejaVu Sans"
+        "Source Han Sans SC"
+        "Noto Sans CJK SC"
+      ];
+      serif = [
+        "Noto Serif"
+        "DejaVu Serif"
+        "Source Han Serif SC"
+      ];
     };
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nix.settings = {
     substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store"
