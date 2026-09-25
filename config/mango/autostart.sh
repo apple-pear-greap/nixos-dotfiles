@@ -4,7 +4,7 @@ set +e
 
 swaybg -i ~/nixos-config/wallpapers/Vesna.png >/dev/null 2>&1 &
 
-waybar 2>&1 &
+$HOME/nixos-config/config/waybar/waybar-launcher.sh mango 2>&1 &
 fcitx5 --replace -d >/dev/null 2>&1 &
 
 # keep clipboard content
