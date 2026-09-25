@@ -59,6 +59,11 @@
     };
   };
 
+  programs.localsend = {
+    enable = true;
+    openFirewall = true;
+  };
+
   services.daed = {
     enable = true;
 
