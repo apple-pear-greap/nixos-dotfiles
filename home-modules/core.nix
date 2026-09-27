@@ -24,6 +24,12 @@ in
     ./yazi.nix
     inputs.helium-flake.homeModules.default
   ];
+
+  home.packages = with pkgs; [
+    grim
+    slurp
+  ];
+
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
