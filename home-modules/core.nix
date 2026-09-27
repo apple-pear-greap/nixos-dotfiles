@@ -16,6 +16,7 @@ let
     mango = "mango";
     tmux = "tmux";
     emacs = "emacs";
+    waybar = "waybar";
   };
 in
 {
@@ -30,6 +31,20 @@ in
 
   programs.firefox.enable = true;
 
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      nrs = "sudo nixos-rebuild switch";
+      zc = "cd ~/nixos-config/";
+    };
+  };
+
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    presets = [ "pure-preset" ];
+  };
+
   programs.git = {
     enable = true;
     settings = {
@@ -38,12 +53,9 @@ in
     };
   };
 
-  programs.bash = {
+  programs.fzf = {
     enable = true;
-    shellAliases = {
-      nrs = "sudo nixos-rebuild switch";
-      zc = "cd ~/nixos-config/";
-    };
+    enableBashIntegration = true;
   };
 
   programs.neovim = {
