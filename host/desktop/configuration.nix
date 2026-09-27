@@ -67,6 +67,11 @@
   };
   programs.gamemode.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    wineWow64Packages.stable
+    winetricks
+  ];
+
   services.tailscale.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
