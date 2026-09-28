@@ -1,0 +1,78 @@
+# ============================================
+# Emacs 配置文件 .gitignore
+# ============================================
+
+# ---------- Emacs 自动生成的目录 ----------
+# 自动保存文件（备份）
+auto-save-list/
+# 备份文件
+backups/
+# 保存列表
+savehist/
+# 最近文件列表
+recentf
+
+# ---------- eshell ----------
+eshell/
+# 如果你用的是别的 shell 集成
+shell-history
+
+# ---------- 包管理 ----------
+elpa/
+eln-cache/
+straight/
+.cache/
+var/
+package-quickstart.el
+
+# ---------- 编译与字节码 ----------
+*.elc
+*.eln
+*.eln.cache
+*.eln.*
+
+# ---------- 锁文件 ----------
+.#*
+*~
+\#*\#
+
+# ---------- Transient 历史 ----------
+transient/
+transient-history.el
+
+# ---------- 会话与状态 ----------
+.url
+places
+bookmarks
+ido.last
+projectile-bookmarks.eld
+org-clock-save.el
+org-agenda.txt
+
+# ---------- Org 相关 ----------
+# 取消注释如果你不想提交 org 导出的文件
+*.html
+*.tex
+*.pdf
+
+# ---------- 本地覆盖配置 ----------
+custom.el
+custom-file.el
+init-local.el
+local.el
+.env
+
+# ---------- 系统文件 ----------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ---------- 日志 ----------
+*.log
+messages
+
+# ---------- 特定项目 ----------
+# 如果你有本地测试用的文件
+/tmp/
+/test/
