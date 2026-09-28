@@ -1,0 +1,20 @@
+
+;; ----- amx-history -----
+(
+ restart-emacs
+ package-install
+ package-install-from-buffer
+ rainbow-delimiters-mode
+ mc/edit-lines
+ cd
+ 5x5
+)
+
+;; ----- amx-data -----
+(
+ (mc/edit-lines . 2)
+ (rainbow-delimiters-mode . 1)
+ (package-install-from-buffer . 1)
+ (package-install . 1)
+ (restart-emacs . 2)
+)
