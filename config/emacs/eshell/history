@@ -1,7 +1,0 @@
-fastfetch 
-btop
-free -g
-free -h
-ps aux | rg emacs
-ps aux
-ps aux | rg .emacs
