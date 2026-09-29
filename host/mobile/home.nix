@@ -13,21 +13,8 @@
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
   home.packages = with pkgs; [
-    jq
-    fastfetch
-    tree
-    rofi
     adwaita-icon-theme
-    btop
-    pavucontrol
-    lazygit
-    pamixer
-    gamescope
-    bluetui
     spotify
-
-    foot
-    swaybg
 
     pkg-config
   ];

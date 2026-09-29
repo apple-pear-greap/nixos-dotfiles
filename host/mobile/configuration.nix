@@ -16,7 +16,19 @@
     inputs.mangowm.nixosModules.mango
   ];
 
+  zramSwap.enable = true;
   networking.hostName = "nixos-btw"; # Define your hostname.
+
+  #use a systemd service to unblock bluetooth
+  systemd.services.unblock-bluetooth = {
+    description = "Unblock Bluetooth on boot";
+    wantedBy = [ "bluetooth.service" ];
+    before = [ "bluetooth.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.util-linux}/bin/rfkill unblock bluetooth";
+    };
+  };
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";
@@ -57,6 +69,10 @@
       START_CHARGE_THRESH_BAT0 = 70; # 40 and below it starts to charge
       STOP_CHARGE_THRESH_BAT0 = 95; # 80 and above it stops charging
     };
+  };
+
+  programs.steam = {
+    enable = true;
   };
 
   programs.localsend = {
