@@ -26,8 +26,53 @@ in
   ];
 
   home.packages = with pkgs; [
+    # cli tools
+    jq
+    lazygit
+
+    # cli toys
+    fastfetch
+    tree
+    btop
+
+    # wallpapers
+    swaybg
+
+    # terminal
+    foot
+    kitty
+
+    # app launchaer
+    rofi
+
+    # clip
+    wl-clipboard
+    cliphist
+
+    # screen shot
     grim
     slurp
+
+    # volumn control and bluetooth
+    pamixer
+    pavucontrol
+    pulsemixer
+    bluetui
+    blueman
+
+    #CN must have
+    wechat
+
+    #lsp
+    nixd
+    nixfmt
+    clang-tools
+    lua-language-server
+
+    #program tools
+    clang
+    gnumake
+    cmake
   ];
 
   xdg.userDirs = {
@@ -86,6 +131,10 @@ in
   programs.emacs = {
     enable = true;
     package = pkgs.emacs-gtk;
+    extraPackages = epkgs: [
+      epkgs.nix-mode
+      epkgs.nixfmt
+    ];
   };
 
   programs.helium = {
