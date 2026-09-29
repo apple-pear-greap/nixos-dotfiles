@@ -12,11 +12,6 @@
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
-  zramSwap = {
-    enable = true;
-    memoryPercent = 25;
-    priority = 5;
-  };
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
@@ -119,7 +114,6 @@
     enable = true;
     defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
-      # 先用拉丁字体，中文再回退到思源/苹方系，避免英文符号变宽
       monospace = [
         "JetBrainsMonoNL NF"
         "Maple Mono NF CN"
