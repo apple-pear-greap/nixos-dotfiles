@@ -1,20 +1,21 @@
+local gh = function(x) return 'https://github.com' .. x end
 vim.pack.add({
   -- file navigation
-  "https://github.com/stevearc/oil.nvim",
-  "https://github.com/refractalize/oil-git-status.nvim",
-  "https://github.com/ibhagwan/fzf-lua",
+  gh('stevearc/oil.nvim'),
+  gh('refractalize/oil-git-status.nvim'),
+  gh('ibhagwan/fzf-lua'),
 
-  "https://github.com/nvim-mini/mini.nvim",
+  gh('nvim-mini/mini.nvim'),
 
   -- appearance
-  "https://github.com/folke/tokyonight.nvim",
-  "https://github.com/xiyaowong/transparent.nvim",
-  "https://github.com/nvim-lualine/lualine.nvim",
+  gh('folke/tokyonight.nvim'),
+  gh('xiyaowong/transparent.nvim'),
+  gh('nvim-lualine/lualine.nvim'),
 
   -- lsp
-  "https://github.com/neovim/nvim-lspconfig",
-  'https://github.com/saghen/blink.lib',
-  'https://github.com/saghen/blink.cmp',
+  gh('neovim/nvim-lspconfig'),
+  gh('saghen/blink.lib'),
+  gh('saghen/blink.cmp'),
 })
 
 require("oil").setup({
@@ -29,6 +30,7 @@ require('fzf-lua').setup({})
 require('mini.icons').setup()
 require('mini.ai').setup()
 require('mini.surround').setup()
+require('mini.pairs').setup()
 require('mini.jump').setup()
 require('mini.jump2d').setup({
   view = {
@@ -44,5 +46,20 @@ require('lualine').setup()
 
 local cmp = require('blink.cmp')
 cmp.setup({
+  keymap = {
+    preset = "default",
+    ['<C-j>'] = { 'select_next', 'fallback' },
+    ['<C-k>'] = { 'select_prev', 'fallback' },
+    ['<C-g>'] = { 'cancel', 'fallback' },
+    ['<Tab>'] = {
+      'accept',
+      'snippet_forward',
+      'fallback'
+    }
+  },
+  appearance = {
+    nerd_font_variant = "mono",
+    use_nvim_cmp_as_default = true,
+  },
   fuzzy = { implementation = "prefer_rust_with_warning" }
 })

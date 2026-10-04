@@ -24,6 +24,10 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs"; # 确保与你系统使用的 nixpkgs 版本一致
+    };
   };
 
   outputs =

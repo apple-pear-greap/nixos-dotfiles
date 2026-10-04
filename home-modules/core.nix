@@ -2,6 +2,7 @@
   inputs,
   pkgs,
   config,
+  pkgs-unstable,
   ...
 }:
 let
@@ -21,7 +22,6 @@ let
 in
 {
   imports = [
-    ./yazi.nix
     inputs.helium-flake.homeModules.default
   ];
 
@@ -29,6 +29,12 @@ in
     # cli tools
     jq
     lazygit
+    bat
+    ffmpegthumbnailer
+    glow
+    chafa
+    ffmpeg
+    sxiv
 
     # cli toys
     fastfetch
@@ -84,6 +90,10 @@ in
 
   programs.firefox.enable = true;
 
+  programs.tmux.package = pkgs.tmux.overrideAttrs (old: {
+    configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-sixel" ];
+  });
+
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -137,6 +147,27 @@ in
       epkgs.nix-mode
       epkgs.nixfmt
     ];
+  };
+
+  programs.nnn = {
+    enable = true;
+    package = pkgs-unstable.nnn.override { withNerdIcons = true; };
+    plugins = {
+      src =
+        (pkgs.fetchFromGitHub {
+          owner = "jarun";
+          repo = "nnn";
+          rev = "v5.2";
+          sha256 = "sha256-u+88aDHfOZ6bSkg6ahS6eNZWj2QCwJXKW+8nHR99kic=";
+        })
+        + "/plugins";
+      mappings = {
+        p = "preview-tui";
+      };
+    };
+
+    enableBashIntegration = true;
+    quitcd = true;
   };
 
   programs.helium = {
