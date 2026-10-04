@@ -53,6 +53,8 @@ in
     grim
     slurp
 
+    #gui tools
+    kdePackages.okular
     # volumn control and bluetooth
     pamixer
     pavucontrol
