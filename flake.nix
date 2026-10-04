@@ -32,7 +32,6 @@
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
-      waybar,
       chaotic,
       ...
     }:
