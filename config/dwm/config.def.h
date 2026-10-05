@@ -64,6 +64,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_1, "-nf", col_3, "-sb", col_2, "-sf", col_4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *screenshot_select[] = { "/bin/sh", "-c", "maim -s | xclip -selection clipboard -t image/png", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -90,6 +91,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+  { MODKEY|ShiftMask,             XK_s,       spawn,         {.v = screenshot_select } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
