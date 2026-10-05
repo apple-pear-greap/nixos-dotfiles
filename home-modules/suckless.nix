@@ -1,10 +1,19 @@
-{ pkgs, ...}:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
     (pkgs.st.overrideAttrs (_: {
       src = ../config/st;
-      patches = [];
+      patches = [ ];
     }))
-  ]
+    (pkgs.dmenu.overrideAttrs (_: {
+      src = ../config/dmenu;
+      patches = [ ];
+    }))
+    (pkgs.dwmblocks.overrideAttrs (_: {
+        conf = ../config/dwmblocks/blocks.def.h;
+        patches = [];
+      }))
+    xwallpaper
+  ];
 }
