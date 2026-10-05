@@ -2,7 +2,7 @@
 let
   configPath = "${config.home.homeDirectory}/nixos-config/config";
   creatSymlink = subpath: {
-    source = config.lib.file.mkOutOfStoreSymlink "${configPath}/{subpath}";
+    source = config.lib.file.mkOutOfStoreSymlink "${configPath}/${subpath}";
     recursive = true;
   };
 in
