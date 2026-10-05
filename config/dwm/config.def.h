@@ -22,6 +22,12 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_3, col_2, col_4 },
 };
 
+static const char *const autostart[] = {
+  "xwallpaper", "--zoom", "/home/yuan/nixos-config/wallpapers/VodOdetta.jpg", NULL,
+  "sh","-c","LC_ALL=C dwmblocks", NULL,
+	NULL /* terminate */
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
