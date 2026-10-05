@@ -39,7 +39,17 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services.xserver = {
+    enable = true;
+    autoRepeatDelay = 200;
+    autoRepeatInterval = 35;
+  };
+  services.xserver.windowManager.dwm = {
+    enable = true;
+    package = pkgs.dwm.overrideAttrs {
+      src = ../../config/dwm;
+    };
+  };
   # services.xserver.displayManager.lightdm.enable = true;
   services.displayManager.ly.enable = true;
   programs.sway = {
