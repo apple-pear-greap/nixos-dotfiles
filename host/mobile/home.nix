@@ -9,6 +9,7 @@
   imports = [
     ../../home-modules/core.nix
     ../../home-modules/mpv.nix
+    ../../home-modules/suckless.nix
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
