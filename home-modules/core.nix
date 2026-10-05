@@ -6,23 +6,18 @@
   ...
 }:
 let
-  configPath = "${config.home.homeDirectory}/nixos-config/config";
-  creatSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
-  configs = {
-    nvim = "nvim";
-    rofi = "rofi";
-    foot = "foot";
-    sway = "sway";
-    hypr = "hypr";
-    mango = "mango";
-    tmux = "tmux";
-    emacs = "emacs";
-    waybar = "waybar";
-  };
+  configs = [
+    "nvim"
+    "rofi"
+    "foot"
+    "tmux"
+    "emacs"
+  ];
 in
 {
   imports = [
     inputs.helium-flake.homeModules.default
+    ../libs/xdg-links.nix
   ];
 
   home.packages = with pkgs; [
@@ -40,24 +35,6 @@ in
     fastfetch
     tree
     btop
-
-    # wallpapers
-    swaybg
-
-    # terminal
-    foot
-    kitty
-
-    # app launchaer
-    rofi
-
-    # clip
-    wl-clipboard
-    cliphist
-
-    # screen shot
-    grim
-    slurp
 
     #gui tools
     kdePackages.okular
@@ -99,6 +76,7 @@ in
     shellAliases = {
       nrs = "sudo nixos-rebuild switch";
       zc = "cd ~/nixos-config/";
+      lg = "lazygit";
     };
   };
 
@@ -189,8 +167,5 @@ in
     };
   };
 
-  xdg.configFile = builtins.mapAttrs (name: subpath: {
-    source = creatSymlink "${configPath}/${subpath}";
-    recursive = true;
-  }) configs;
+  xdg.configFile = config.my.xdg.creatSymlinks configs;
 }

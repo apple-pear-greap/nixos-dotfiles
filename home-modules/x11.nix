@@ -29,6 +29,8 @@ in
       xclip
       xrandr
       xwallpaper
+      maim
+      slop
     ];
   };
 }
