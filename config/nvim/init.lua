@@ -19,3 +19,7 @@ vim.keymap.set('n', '<leader>w', ':w<CR>')
 vim.keymap.set('n', '<leader>q', ':q<CR>')
 vim.keymap.set('n', '<leader>cd', ':Oil<CR>')
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = "diagnostic messages" })
+
+vim.keymap.set('n', '<leader>lf', function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = 'LSP format buffer' })
