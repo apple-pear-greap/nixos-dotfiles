@@ -47,6 +47,10 @@
     "transparent.nvim": {
       "rev": "e00ca1cf09caef575edf8da7e5a8b9193893b4c7",
       "src": "https://github.com/xiyaowong/transparent.nvim"
+    },
+    "vimtex": {
+      "rev": "bbfa1501287b65e8803d5cc1007db2c2351c4453",
+      "src": "https://github.com/lervag/vimtex"
     }
   }
 }

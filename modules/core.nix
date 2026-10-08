@@ -7,6 +7,11 @@
   ...
 }:
 {
+  imports = [
+    ./x11.nix
+    ./wayland.nix
+    inputs.agenix.nixosModules.default
+  ];
   nix.gc = {
     automatic = true;
     dates = "weekly";

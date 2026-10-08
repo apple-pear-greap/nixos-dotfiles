@@ -17,7 +17,10 @@ in
 {
   imports = [
     inputs.helium-flake.homeModules.default
+    inputs.agenix.homeManagerModules.default
     ../libs/xdg-links.nix
+    ./ai.nix
+    ./latex.nix
   ];
 
   home.packages = with pkgs; [
@@ -32,6 +35,7 @@ in
     sxiv
 
     # cli toys
+    brightnessctl
     fastfetch
     pkgs-unstable.fetch
     tree
@@ -71,6 +75,10 @@ in
     configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-sixel" ];
   });
 
+  age.secrets.apikey = {
+    file = ../secrets/secret_ds.age;
+    mode = "0400";
+    };
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -79,6 +87,9 @@ in
       lg = "lazygit";
       ff = "fastfetch -c examples/13.jsonc";
     };
+    initExtra = ''
+      export DEEPSEEK_API_KEY=$(cat ${config.age.secrets.apikey.path})
+    '';
   };
 
   programs.starship = {
@@ -111,6 +122,7 @@ in
       nil
       clang-tools
       lua-language-server
+      texlab
 
       nixpkgs-fmt
 
