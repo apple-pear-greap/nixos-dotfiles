@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# clock block
+date '+ %a %b %d %Y %H:%M'

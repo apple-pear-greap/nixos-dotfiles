@@ -25,6 +25,8 @@ static const char *colors[][3]      = {
 static const char *const autostart[] = {
   "xwallpaper", "--zoom", "/home/yuan/nixos-config/wallpapers/VodOdetta.jpg", NULL,
   "sh","-c","LC_ALL=C dwmblocks", NULL,
+  "picom", NULL,
+  "fcitx5","-d",NULL,
 	NULL /* terminate */
 };
 
