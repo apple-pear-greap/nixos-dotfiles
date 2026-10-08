@@ -6,23 +6,18 @@
   ...
 }:
 let
-  configPath = "${config.home.homeDirectory}/nixos-config/config";
-  creatSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
-  configs = {
-    nvim = "nvim";
-    rofi = "rofi";
-    foot = "foot";
-    sway = "sway";
-    hypr = "hypr";
-    mango = "mango";
-    tmux = "tmux";
-    emacs = "emacs";
-    waybar = "waybar";
-  };
+  configs = [
+    "nvim"
+    "rofi"
+    "foot"
+    "tmux"
+    "emacs"
+  ];
 in
 {
   imports = [
     inputs.helium-flake.homeModules.default
+    ../libs/xdg-links.nix
   ];
 
   home.packages = with pkgs; [
@@ -38,33 +33,17 @@ in
 
     # cli toys
     fastfetch
+    pkgs-unstable.fetch
     tree
     btop
 
-    # wallpapers
-    swaybg
-
-    # terminal
-    foot
-    kitty
-
-    # app launchaer
-    rofi
-
-    # clip
-    wl-clipboard
-    cliphist
-
-    # screen shot
-    grim
-    slurp
-
+    #gui tools
+    kdePackages.okular
     # volumn control and bluetooth
     pamixer
     pavucontrol
     pulsemixer
     bluetui
-    blueman
 
     #CN must have
     wechat
@@ -97,6 +76,8 @@ in
     shellAliases = {
       nrs = "sudo nixos-rebuild switch";
       zc = "cd ~/nixos-config/";
+      lg = "lazygit";
+      ff = "fastfetch -c examples/13.jsonc";
     };
   };
 
@@ -172,6 +153,8 @@ in
     enable = true;
     flags = [
       "--ozone-platform-hint=auto"
+      "--enable-features=VaapiVideoDecodeLinuxGL"
+      "--enable-features=AcceleratedVideoDecodeLinuxGL"
     ];
   };
 
@@ -187,8 +170,5 @@ in
     };
   };
 
-  xdg.configFile = builtins.mapAttrs (name: subpath: {
-    source = creatSymlink "${configPath}/${subpath}";
-    recursive = true;
-  }) configs;
+  xdg.configFile = config.my.xdg.creatSymlinks configs;
 }

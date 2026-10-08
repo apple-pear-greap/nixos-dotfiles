@@ -1,4 +1,4 @@
-vim.lsp.enable({ "lua_ls", "nil_ls", "clangd" })
+vim.lsp.enable({ "lua_ls", "nixd", "clangd" })
 vim.diagnostic.config({
   virtual_text = true,
   update_in_insert = true,
@@ -50,25 +50,4 @@ vim.lsp.config('lua_ls', {
   settings = {
     Lua = {},
   },
-})
-
-vim.keymap.set('n', '<leader>lf', function()
-  vim.lsp.buf.format({ async = true })
-end, { desc = 'LSP format buffer' })
-
--- autocmd for auto format when saving
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-    -- Only format if the LSP server supports it
-    if client:supports_method("textDocument/formatting") then
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = args.buf,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = args.buf, async = false })
-        end,
-      })
-    end
-  end,
 })

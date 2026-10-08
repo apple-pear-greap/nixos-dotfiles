@@ -1,8 +1,9 @@
-local gh = function(x) return 'https://github.com' .. x end
+local gh = function(x) return 'https://github.com/' .. x end
 vim.pack.add({
   -- file navigation
   gh('stevearc/oil.nvim'),
   gh('refractalize/oil-git-status.nvim'),
+  gh('luukvbaal/nnn.nvim'),
   gh('ibhagwan/fzf-lua'),
 
   gh('nvim-mini/mini.nvim'),
@@ -25,7 +26,16 @@ require("oil").setup({
 })
 require('oil-git-status').setup()
 
-require('fzf-lua').setup({})
+local nnn_builtin = require('nnn').builtin
+require('nnn').setup({
+  mappings = {
+    { "<C-t>", nnn_builtin.open_in_tab },
+    { "<C-s>", nnn_builtin.open_in_split },
+    { "<C-v>", nnn_builtin.open_in_vsplit },
+  }
+})
+
+
 
 require('mini.icons').setup()
 require('mini.ai').setup()

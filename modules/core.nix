@@ -95,6 +95,7 @@
     fd
     nixos-grub2-theme
     nix-output-monitor
+    texliveFull
     # sonobus
   ];
 

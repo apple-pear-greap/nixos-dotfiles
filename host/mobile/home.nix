@@ -9,6 +9,8 @@
   imports = [
     ../../home-modules/core.nix
     ../../home-modules/mpv.nix
+    ../../home-modules/x11.nix
+    ../../home-modules/wayland.nix
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
@@ -18,12 +20,18 @@
 
     pkg-config
   ];
+
+  my.hm.x11 = {
+    enable = true;
+    wm = "dwm";
+  };
+  my.hm.wayland = {
+    enable = false;
+    wm = "sway";
+  };
+
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-  };
-  programs.waybar = {
-    enable = true;
-    package = inputs.waybar.packages.${pkgs.system}.waybar;
   };
 
   programs.kitty = {

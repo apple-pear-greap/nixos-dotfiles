@@ -1,0 +1,136 @@
+//-*- mode: jsonc -*-
+{
+    "layer": "top", 
+    "position": "top", 
+    "height": 30, 
+    "spacing": 4, 
+
+    // Choose the order of the modules
+    "modules-left": [
+        "sway/workspaces",
+        "custom/sep",
+        "sway/window",
+        "custom/sep",
+        "sway/mode",
+        "custom/sep",
+        "sway/scratchpad",
+        "custom/sep",
+        "mpris",
+        "custom/sep",
+    ],
+    "modules-center": [
+    ],
+
+    "modules-right": [
+        "custom/sep",
+        "backlight",
+        "custom/sep",
+        "cpu",
+        "custom/sep",
+        "memory",
+        "custom/sep",
+        "clock",
+        "custom/sep",
+        "network",
+        "custom/sep",
+        "pulseaudio",
+        "custom/sep",
+        "battery",
+        "custom/sep",
+        "tray"
+    ],
+
+    // Modules configuration
+    "sway/workspaces": {
+        "all-outputs": false,
+        "warp-on-scroll": true,
+        "format": "{name}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": []
+        }
+    },
+    "sway/window" : {
+        "max-length": 30,
+        "seperate-outputs": false,
+        "icon": true,
+        "icon-size": 18
+    },
+    "sway/scratchpad":{
+    	"format": "{icon} {count}",
+	"format-icons": ["",""]
+    },
+    "backlight": {
+      "device": "intel_backlight",
+      "format": "{icon} :{percent}%",
+      "format-icons": ["󰃞","󰃝","󰃟","󰃠"]
+    },
+    "mpris": {
+      "format": "{player_icon} {title}",
+      "player-icons": {
+      "default": "▶",
+      "mpv": "🎵",
+      "spotify": ""
+	    },
+      "interval": 1,
+      "max-length": 20,
+      "ignored-players": ["chromium", "firefox"],
+      "expand": true
+    },
+    "pulseaudio": {
+      "format": " :{volume}%",
+      "format-muted": "",
+      "format-bluetooth":"{icon}:{volume}%"
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10,
+        // "icons": {
+        //   "blueman": "bluetooth",
+        //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        // }
+    },
+    "clock": {
+        "format": " {:L%H:%M}",
+        "format-alt": " {:L%b%d·%A}"
+    },
+    "cpu": {
+        "format": " :{usage}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": " :{percentage}%"
+    },
+    "disk": {
+        "interval": 60,
+        "path": "/",
+        "format": "Disk: {free}"
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} :{capacity}% {time}",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "Bat {capacity}%",
+        "format-time": "{H}:{M}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "network": {
+        "format": " {essid}:{signalStrength}%",
+        "format-disconnected": "Disconnected ⚠"
+    },
+    "custom/sep": {
+        "format" : "|",
+        "interval" : 0
+    }
+}

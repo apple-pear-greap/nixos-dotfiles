@@ -8,6 +8,8 @@
 {
   imports = [
     ../../home-modules/core.nix
+    ../../home-modules/x11.nix
+    ../../home-modules/wayland.nix
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
@@ -25,11 +27,6 @@
 
   programs.chromium = {
     enable = true;
-  };
-
-  programs.waybar = {
-    enable = true;
-    package = inputs.waybar.packages.${pkgs.system}.waybar;
   };
 
   home.stateVersion = "26.05";
