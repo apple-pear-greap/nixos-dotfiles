@@ -12,6 +12,7 @@ in
 {
   imports = [
     ./wm/sway.nix
+    ./wm/niri.nix
   ];
   options.my.hm.wayland = {
     enable = mkEnableOption "My home manager wayland config";
@@ -19,6 +20,7 @@ in
       type = types.enum [
         "hyprland"
         "sway"
+        "niri"
         "mango"
       ];
       default = "sway";

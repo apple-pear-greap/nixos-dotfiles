@@ -12,15 +12,18 @@
     ./hardware-configuration.nix
     ../../modules/core.nix
     ../../modules/nvidia.nix
+    inputs.aagl.nixosModules.default
   ];
 
-  # Use the systemd-boot EFI boot loader.
-  # boot.loader.systemd-boot.enable = true;
-  # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+  my.x11.enable = false;
+  my.wayland = {
+    enable = true;
+    wm = "niri";
+  };
 
   # environment variables
   environment.sessionVariables = {
-    AQ_DRM_DEVICES = "/dev/dri/intel-igpu:/dev/dri/nvidia-dgpu";
+    AQ_DRM_DEVICES = "/dev/dri/nvidia-dgpu:/dev/dri/intel-igpu";
     LIBVA_DRIVER_NAME = "iHD";
     QT_IM_MODULE = "fcitx";
     SDL_IM_MODULE = "fcitx";
@@ -33,7 +36,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.enable = false;
   programs.hyprland = {
     enable = true;
     package = pkgs-unstable.hyprland;
@@ -67,17 +70,27 @@
   };
   programs.gamemode.enable = true;
 
+  # 配置 Cachix，避免自行编译启动器
+  nix.settings = inputs.aagl.nixConfig;
+
+  # 启用你需要的启动器
+  programs.anime-game-launcher.enable = true;
+  programs.honkers-railway-launcher.enable = true;
+  programs.sleepy-launcher.enable = true;
+
   environment.systemPackages = with pkgs; [
     wineWow64Packages.stable
     winetricks
   ];
 
   services.tailscale.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yuan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlpSnpK/ZKhqcGP3ibhlQjJI76udTF7bfiuupjp5P1F yoko64946@gmail.com"

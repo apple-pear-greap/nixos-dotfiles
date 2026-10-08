@@ -8,9 +8,12 @@
 {
   imports = [
     ../../home-modules/core.nix
-    ../../home-modules/x11.nix
-    ../../home-modules/wayland.nix
   ];
+  my.hm.x11.enable = false;
+  my.hm.wayland = {
+    enable = true;
+    wm = "niri";
+  };
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
   home.packages = with pkgs; [

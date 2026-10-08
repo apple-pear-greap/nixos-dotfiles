@@ -18,6 +18,8 @@ in
   imports = [
     inputs.helium-flake.homeModules.default
     ../libs/xdg-links.nix
+    ./x11.nix
+    ./wayland.nix
   ];
 
   home.packages = with pkgs; [

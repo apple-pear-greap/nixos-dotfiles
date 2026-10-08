@@ -11,6 +11,7 @@ in
 {
   imports = [
     ./wm/sway.nix
+    ./wm/niri.nix
   ];
   options.my.wayland = {
     enable = mkEnableOption "Wayland environment";
@@ -18,6 +19,7 @@ in
       type = types.enum [
         "sway"
         "hyprland"
+        "niri"
       ];
       default = "sway";
     };
