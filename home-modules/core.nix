@@ -33,6 +33,7 @@ in
 
     # cli toys
     fastfetch
+    pkgs-unstable.fetch
     tree
     btop
 
@@ -43,7 +44,6 @@ in
     pavucontrol
     pulsemixer
     bluetui
-    blueman
 
     #CN must have
     wechat
@@ -77,6 +77,7 @@ in
       nrs = "sudo nixos-rebuild switch";
       zc = "cd ~/nixos-config/";
       lg = "lazygit";
+      ff = "fastfetch -c examples/13.jsonc";
     };
   };
 
@@ -152,6 +153,8 @@ in
     enable = true;
     flags = [
       "--ozone-platform-hint=auto"
+      "--enable-features=VaapiVideoDecodeLinuxGL"
+      "--enable-features=AcceleratedVideoDecodeLinuxGL"
     ];
   };
 

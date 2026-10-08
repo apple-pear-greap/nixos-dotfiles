@@ -11,7 +11,7 @@ let
 in
 {
   imports = [
-    ./sway.nix
+    ./wm/sway.nix
   ];
   options.my.hm.wayland = {
     enable = mkEnableOption "My home manager wayland config";

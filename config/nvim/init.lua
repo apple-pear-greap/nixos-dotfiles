@@ -1,4 +1,5 @@
 require("plugins")
+require('fzf')
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -19,6 +20,21 @@ vim.keymap.set('n', '<leader>w', ':w<CR>')
 vim.keymap.set('n', '<leader>q', ':q<CR>')
 vim.keymap.set('n', '<leader>cd', ':Oil<CR>')
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = "diagnostic messages" })
+
+vim.keymap.set("n", "<leader>ff", function()
+    FzfLua.files()
+  end,
+  { desc = "fzf files" })
+
+vim.keymap.set("n", "<leader>fg", function()
+    FzfLua.live_grep()
+  end,
+  { desc = "fzf live grep" })
+
+vim.keymap.set("n", "<leader>fh", function()
+    FzfLua.helptags()
+  end,
+  { desc = "fzf search help" })
 
 vim.keymap.set('n', '<leader>lf', function()
   vim.lsp.buf.format({ async = true })

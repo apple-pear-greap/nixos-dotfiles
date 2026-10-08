@@ -20,8 +20,13 @@ in
         patches = [ ];
       }))
       (pkgs.dwmblocks.overrideAttrs (_: {
-        conf = ../config/dwmblocks/blocks.def.h;
-        patches = [ ];
+        # 这里直接手动提供修补后的 postPatch
+        postPatch = ''
+          cp ${../config/dwmblocks/blocks.def.h} blocks.def.h
+
+          substituteInPlace dwmblocks.c \
+            --replace-fail 'void termhandler()' 'void termhandler(int signum)'
+        '';
       }))
     ];
   };

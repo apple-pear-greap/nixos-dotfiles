@@ -10,7 +10,7 @@ let
 in
 {
   imports = [
-    ./suckless.nix
+    ./wm/suckless.nix
   ];
   options.my.hm.x11 = {
     enable = mkEnableOption "My home manager x11 config";
@@ -31,6 +31,10 @@ in
       xwallpaper
       maim
       slop
+
+      picom
     ];
+
+    xdg.configFile = config.my.xdg.creatSymlinks [ "picom"];
   };
 }
