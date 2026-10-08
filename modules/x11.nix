@@ -12,7 +12,7 @@ in
   imports = [
     ./wm/dwm.nix
   ];
-  option.my.x11 = {
+  options.my.x11 = {
     enable = mkEnableOption "X11 environment";
     wm = mkOption {
       type = types.enum [

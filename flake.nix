@@ -1,5 +1,6 @@
 {
   description = "Yuan's nixos config";
+
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,14 +20,17 @@
       url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    daeuniverse.url = "github:daeuniverse/flake.nix";
+    daeuniverse = {
+      url = "github:daeuniverse/flake.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     helium-flake = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs"; # 确保与你系统使用的 nixpkgs 版本一致
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -51,23 +55,27 @@
           hostname,
           hostPath,
           homePath,
+          extraModules ? [ ],
         }:
-        nixpkgs.lib.nixosSystem {
+        let
           specialArgs = { inherit inputs pkgs-unstable hostname; };
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
           modules = [
             hostPath
-            chaotic.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit inputs pkgs-unstable hostname; };
+                extraSpecialArgs = specialArgs;
                 users.yuan = import homePath;
                 backupFileExtension = "bak";
               };
             }
-          ];
+          ]
+          ++ extraModules;
         };
     in
     {
@@ -76,6 +84,7 @@
           hostname = "nixos";
           hostPath = ./host/desktop/configuration.nix;
           homePath = ./host/desktop/home.nix;
+          extraModules = [ chaotic.nixosModules.default ];
         };
         nixos-btw = mkHost {
           hostname = "nixos-btw";

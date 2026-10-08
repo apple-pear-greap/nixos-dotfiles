@@ -12,9 +12,16 @@
     ./hardware-configuration.nix
     ../../modules/core.nix
     ../../modules/intel.nix
-    inputs.daeuniverse.nixosModules.daed
-    inputs.mangowm.nixosModules.mango
+    ../../modules/x11.nix
+    ../../modules/wayland.nix
+    inputs.daeuniverse.nixosModules.dae
   ];
+
+  my.x11 = {
+      enable = true;
+      wm = "dwm";
+    };
+  my.wayland.enable = false;
 
   zramSwap.enable = true;
   networking.hostName = "nixos-btw"; # Define your hostname.
@@ -39,26 +46,7 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    autoRepeatDelay = 200;
-    autoRepeatInterval = 35;
-  };
-  services.xserver.windowManager.dwm = {
-    enable = true;
-    package = pkgs.dwm.overrideAttrs {
-      src = ../../config/dwm;
-    };
-  };
-  # services.xserver.displayManager.lightdm.enable = true;
-  services.displayManager.ly.enable = true;
-  programs.sway = {
-    enable = true;
-    package = pkgs.swayfx;
-  };
-  programs.mango.enable = true;
 
-  services.blueman.enable = true;
   powerManagement.enable = true;
   services.power-profiles-daemon.enable = false;
   services.tlp = {
@@ -90,13 +78,15 @@
     openFirewall = true;
   };
 
-  services.daed = {
+  services.dae = {
     enable = true;
 
     openFirewall = {
       enable = true;
       port = 12345;
     };
+
+    configFile = "/home/yuan/.proxy.dae";
   };
 
   users.users.yuan = {

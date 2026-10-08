@@ -12,7 +12,7 @@ in
   imports = [
     ./wm/sway.nix
   ];
-  option.my.wayland = {
+  options.my.wayland = {
     enable = mkEnableOption "Wayland environment";
     wm = mkOption {
       type = types.enum [
