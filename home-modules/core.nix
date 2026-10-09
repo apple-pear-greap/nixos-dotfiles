@@ -21,6 +21,7 @@ in
     ../libs/xdg-links.nix
     ./ai.nix
     ./latex.nix
+    ./tmux.nix
   ];
 
   home.packages = with pkgs; [
