@@ -1,4 +1,4 @@
-vim.lsp.enable({ "lua_ls", "nixd", "clangd" })
+vim.lsp.enable({ "lua_ls", "nixd", "clangd", "texlab" })
 vim.diagnostic.config({
   virtual_text = true,
   update_in_insert = true,

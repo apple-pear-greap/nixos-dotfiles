@@ -12,8 +12,6 @@
     ./hardware-configuration.nix
     ../../modules/core.nix
     ../../modules/intel.nix
-    ../../modules/x11.nix
-    ../../modules/wayland.nix
     inputs.daeuniverse.nixosModules.dae
   ];
 
@@ -71,6 +69,15 @@
 
   programs.steam = {
     enable = true;
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+    openFirewall = true;
   };
 
   programs.localsend = {

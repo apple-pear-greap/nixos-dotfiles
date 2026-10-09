@@ -14,6 +14,7 @@ vim.opt.winborder = "rounded"
 vim.opt.swapfile = false
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = " " -- vimtex (LaTeX) maps live under <leader>l*
 
 vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>')
 vim.keymap.set('n', '<leader>w', ':w<CR>')

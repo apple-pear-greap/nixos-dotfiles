@@ -17,6 +17,9 @@ vim.pack.add({
   gh('neovim/nvim-lspconfig'),
   gh('saghen/blink.lib'),
   gh('saghen/blink.cmp'),
+
+  -- latex
+  gh('lervag/vimtex'),
 })
 
 require("oil").setup({
@@ -50,6 +53,7 @@ require('mini.jump2d').setup({
 })
 
 require("lsp")
+require("latex")
 
 vim.cmd [[colorscheme tokyonight-storm]]
 require('lualine').setup()
