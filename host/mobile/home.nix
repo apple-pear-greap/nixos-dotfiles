@@ -8,9 +8,6 @@
 {
   imports = [
     ../../home-modules/core.nix
-    ../../home-modules/mpv.nix
-    ../../home-modules/x11.nix
-    ../../home-modules/wayland.nix
   ];
   home.username = "yuan";
   home.homeDirectory = "/home/yuan";
