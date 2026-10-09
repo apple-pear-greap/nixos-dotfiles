@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -27,6 +28,8 @@ in
     # Clipboard backends, so the helper works on both X11 and Wayland.
     xclip
     wl-clipboard
+    tmux
     tmuxCopy
   ];
+  xdg.configFile.tmux = config.my.xdg.creatSymlink "tmux";
 }

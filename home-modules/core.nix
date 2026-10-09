@@ -10,7 +10,6 @@ let
     "nvim"
     "rofi"
     "foot"
-    "tmux"
     "emacs"
   ];
 in
@@ -23,6 +22,7 @@ in
     ./wayland.nix
     ./ai.nix
     ./latex.nix
+    ./librewolf.nix
     ./tmux.nix
   ];
 
@@ -73,10 +73,6 @@ in
   };
 
   programs.firefox.enable = true;
-
-  programs.tmux.package = pkgs.tmux.overrideAttrs (old: {
-    configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-sixel" ];
-  });
 
   age.secrets.apikey = {
     file = ../secrets/secret_ds.age;
@@ -171,18 +167,6 @@ in
       "--enable-features=VaapiVideoDecodeLinuxGL"
       "--enable-features=AcceleratedVideoDecodeLinuxGL"
     ];
-  };
-
-  programs.librewolf = {
-    enable = true;
-    # Enable WebGL, cookies and history
-    settings = {
-      "webgl.disabled" = false;
-      "privacy.resistFingerprinting" = false;
-      "privacy.clearOnShutdown.history" = false;
-      "privacy.clearOnShutdown.cookies" = false;
-      "network.cookie.lifetimePolicy" = 0;
-    };
   };
 
   xdg.configFile = config.my.xdg.creatSymlinks configs;
