@@ -5,7 +5,7 @@
 {
   # LaTeX writing environment for Neovim.
   #
-  # texliveFull is already provided system-wide (modules/core.nix); here we
+  # texliveFull is already provided system-wide (modules/system/packages.nix); here we
   # add the pieces Home Manager should own: the texlab language server and a
   # PDF reader with SyncTeX support (used by vimtex for forward/inverse search).
 

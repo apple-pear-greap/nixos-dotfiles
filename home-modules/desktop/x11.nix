@@ -35,6 +35,6 @@ in
       picom
     ];
 
-    xdg.configFile = config.my.xdg.creatSymlinks [ "picom"];
+    xdg.configFile = config.my.xdg.creatSymlinks [ "picom" ];
   };
 }

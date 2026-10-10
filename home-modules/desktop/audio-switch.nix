@@ -12,7 +12,7 @@ let
       rofi
       util-linux
     ];
-    text = builtins.readFile ../scripts/rofi-audio-switch;
+    text = builtins.readFile ../../scripts/rofi-audio-switch;
   };
 in
 {
