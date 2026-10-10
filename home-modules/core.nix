@@ -24,6 +24,8 @@ in
     ./latex.nix
     ./librewolf.nix
     ./tmux.nix
+    ./audio-switch.nix
+    ./notifications.nix
   ];
 
   home.username = "yuan";

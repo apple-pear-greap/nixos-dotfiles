@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Rofi and libnotify need UTF-8. Use English BlueZ output without losing Unicode.
+export LC_ALL=C.UTF-8
+
+notify() {
+    # Never let a stuck notification service block audio switching.
+    if ! timeout -k 1 3 notify-send -a '音频切换' -t 5000 "$@"; then
+        printf '音频切换：通知发送失败\n' >&2
+    fi
+}
+
+fail() {
+    printf '音频切换失败：%s\n' "$1" >&2
+    notify -u critical '音频切换失败' "$1"
+    exit 1
+}
+
+audio() {
+    timeout -k 1 5 pactl "$@"
+}
+
+bluez() {
+    timeout -k 1 5 bluetoothctl "$@"
+}
+
+choose() {
+    rofi -dmenu -i -no-custom -format i -p "$1"
+}
+
+# Keep a meaningful label even if PipeWire provides a missing/placeholder name.
+display_name='
+    def display_name:
+        [.description, .properties["node.description"],
+         .properties["device.description"], .name]
+        | map(select(type == "string")
+            | select(length > 0 and . != "(null)" and . != "null"))
+        | .[0] // "未命名音频设备";
+'
+
+# Do not run two connection/switch operations at once.
+exec 9>"${XDG_RUNTIME_DIR:?}/rofi-audio-switch.lock"
+if ! flock -n 9; then
+    notify '音频切换正在进行' '请等待上一次连接或切换完成。'
+    exit 0
+fi
+
+sinks=$(audio -f json list sinks) || fail '无法访问 PipeWire/PulseAudio，或音频服务响应超时。'
+mode=$(printf '音响 / 有线输出\n蓝牙音频设备\n' | choose '音频输出') || exit 0
+
+if [[ "$mode" == 0 ]]; then
+    outputs=$(jq '[.[] | select((.name | startswith("bluez")) | not) | select(.name != "auto_null")]' <<< "$sinks")
+    [[ $(jq 'length' <<< "$outputs") -gt 0 ]] || fail '没有可用的音响或有线输出。'
+    index=$(jq -r "$display_name .[] | display_name" <<< "$outputs" | choose '选择音响 / 有线输出') || exit 0
+    sink=$(jq -r --argjson i "$index" '.[$i].name' <<< "$outputs")
+    label=$(jq -r --argjson i "$index" "$display_name .[\$i] | display_name" <<< "$outputs")
+else
+    # Only offer paired audio devices, not keyboards, mice or unknown devices.
+    devices=$(bluez devices Paired) || fail '无法访问蓝牙服务，或蓝牙服务响应超时。'
+    addresses=()
+    labels=()
+    while read -r kind address name; do
+        [[ "$kind" == Device ]] || continue
+        info=$(bluez info "$address") || continue
+        if grep -Eq '0000110b-|0000111e-|00001850-' <<< "$info"; then
+            addresses+=("$address")
+            labels+=("${name:-$address} [$address]")
+        fi
+    done <<< "$devices"
+    [[ ${#addresses[@]} -gt 0 ]] || fail '没有已配对的蓝牙音频设备，请先使用 bluetui 配对。'
+    index=$(printf '%s\n' "${labels[@]}" | choose '选择蓝牙设备') || exit 0
+    address=${addresses[$index]}
+    label=${labels[$index]}
+    info=$(bluez info "$address") || fail '读取蓝牙设备状态失败。'
+
+    if ! grep -q 'Connected: yes' <<< "$info"; then
+        notify '正在连接蓝牙' "$label（最长等待约 15 秒）"
+        bluez power on >/dev/null 2>&1 || fail '无法开启蓝牙，请检查 rfkill 或蓝牙适配器。'
+        if connect_output=$(timeout -k 2 15 bluetoothctl connect "$address" 2>&1); then
+            :
+        else
+            status=$?
+            # BlueZ can report an error while the device connects asynchronously.
+            info=$(bluez info "$address") || info=''
+            if ! grep -q 'Connected: yes' <<< "$info"; then
+                if [[ "$status" == 124 || "$status" == 137 ]]; then
+                    fail '蓝牙连接超时。请确认设备已开机、在范围内且未被其他设备占用。'
+                fi
+                fail "蓝牙连接失败：${connect_output:-未知错误}"
+            fi
+        fi
+    fi
+
+    # PipeWire may take a moment to create the sink after BlueZ connects.
+    # Bound the entire polling operation, not just the number of iterations.
+    sink=''
+    deadline=$((SECONDS + 10))
+    while ((SECONDS < deadline)); do
+        sinks=$(audio -f json list sinks) || fail '音频服务已断开或响应超时。'
+        sink=$(jq -r --arg mac "$address" --arg token "${address//:/_}" '
+            [.[] | select(
+                ((.name | startswith("bluez")) and (.name | ascii_downcase | contains($token | ascii_downcase)))
+                or (((.properties["api.bluez5.address"] // .properties["device.string"] // "") | ascii_downcase) == ($mac | ascii_downcase))
+            )] | (map(select(.name | test("a2dp"; "i"))) + .) | .[0].name // empty
+        ' <<< "$sinks")
+        [[ -n "$sink" ]] && break
+        sleep 0.5
+    done
+    [[ -n "$sink" ]] || fail '蓝牙已连接，但没有可用音频输出。请检查设备是否支持音频，以及音频配置是否被设为关闭。'
+fi
+
+[[ -n "$sink" && "$sink" != null ]] || fail '选择的音频输出无效，请重新打开菜单。'
+audio set-default-sink "$sink" || fail '设置默认输出失败。'
+# Move existing playback too; changing the default only affects new streams.
+inputs=$(audio -f json list sink-inputs) || fail '读取正在播放的音频失败。'
+failed=0
+while read -r input; do
+    if ! audio move-sink-input "$input" "$sink"; then
+        failed=$((failed + 1))
+    fi
+done < <(jq -r '.[].index' <<< "$inputs")
+if [[ "$failed" -gt 0 ]]; then
+    notify '默认输出已切换' "$label；部分音频流未能迁移，请在应用中重新选择输出。"
+else
+    notify '音频输出已切换' "$label"
+fi
