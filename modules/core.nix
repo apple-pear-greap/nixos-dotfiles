@@ -4,12 +4,15 @@
   lib,
   pkgs,
   pkgs-unstable,
+  hostname,
   ...
 }:
 {
   imports = [
     ./x11.nix
     ./wayland.nix
+    ./ssh.nix
+    ./users.nix
     inputs.agenix.nixosModules.default
   ];
   nix.gc = {
@@ -29,6 +32,7 @@
   };
   boot.loader.timeout = 5;
 
+  networking.hostName = hostname;
   networking.networkmanager.enable = true;
 
   # Set your time zone.
@@ -60,6 +64,13 @@
     ];
   };
   i18n.inputMethod.fcitx5.waylandFrontend = true;
+
+  environment.sessionVariables = {
+    QT_IM_MODULE = "fcitx";
+    SDL_IM_MODULE = "fcitx";
+    GLFW_IM_MODULE = "ibus";
+    XMODIFIERS = "@im=fcitx";
+  };
 
   services.keyd = {
     enable = true;

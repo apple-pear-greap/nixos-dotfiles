@@ -25,13 +25,7 @@
   environment.sessionVariables = {
     AQ_DRM_DEVICES = "/dev/dri/nvidia-dgpu:/dev/dri/intel-igpu";
     LIBVA_DRIVER_NAME = "iHD";
-    QT_IM_MODULE = "fcitx";
-    SDL_IM_MODULE = "fcitx";
-    GLFW_IM_MODULE = "ibus";
-    XMODIFIERS = "@im=fcitx";
   };
-
-  networking.hostName = "nixos"; # Define your hostname.
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -86,11 +80,6 @@
   services.tailscale.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yuan = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlpSnpK/ZKhqcGP3ibhlQjJI76udTF7bfiuupjp5P1F yoko64946@gmail.com"
@@ -107,16 +96,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-    openFirewall = true;
-  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

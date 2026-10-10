@@ -26,7 +26,16 @@ in
     ./tmux.nix
   ];
 
+  home.username = "yuan";
+  home.homeDirectory = "/home/yuan";
+  home.sessionVariables.NIXOS_OZONE_WL = "1";
+  home.stateVersion = "26.05";
+
   home.packages = with pkgs; [
+    adwaita-icon-theme
+    spotify
+    pkg-config
+
     # cli tools
     jq
     lazygit
@@ -65,6 +74,7 @@ in
     clang
     gnumake
     cmake
+    nodejs
   ];
 
   xdg.userDirs = {

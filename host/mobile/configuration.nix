@@ -22,7 +22,6 @@
   my.wayland.enable = false;
 
   zramSwap.enable = true;
-  networking.hostName = "nixos-btw"; # Define your hostname.
 
   #use a systemd service to unblock bluetooth
   systemd.services.unblock-bluetooth = {
@@ -37,10 +36,6 @@
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";
-    QT_IM_MODULE = "fcitx";
-    SDL_IM_MODULE = "fcitx";
-    GLFW_IM_MODULE = "ibus";
-    XMODIFIERS = "@im=fcitx";
   };
 
   # Enable the X11 windowing system.
@@ -71,15 +66,6 @@
     enable = true;
   };
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-    openFirewall = true;
-  };
-
   programs.localsend = {
     enable = true;
     openFirewall = true;
@@ -94,16 +80,6 @@
     };
 
     configFile = "/home/yuan/.proxy.dae";
-  };
-
-  users.users.yuan = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-    ];
   };
 
   # Open ports in the firewall.

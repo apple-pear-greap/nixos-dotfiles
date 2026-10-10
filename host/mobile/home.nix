@@ -9,15 +9,6 @@
   imports = [
     ../../home-modules/core.nix
   ];
-  home.username = "yuan";
-  home.homeDirectory = "/home/yuan";
-  home.packages = with pkgs; [
-    adwaita-icon-theme
-    spotify
-
-    pkg-config
-  ];
-
   my.hm.x11 = {
     enable = true;
     wm = "dwm";
@@ -25,10 +16,6 @@
   my.hm.wayland = {
     enable = false;
     wm = "sway";
-  };
-
-  home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
   };
 
   programs.kitty = {
@@ -46,6 +33,4 @@
       background_opacity = 0.8;
     };
   };
-
-  home.stateVersion = "26.05";
 }
