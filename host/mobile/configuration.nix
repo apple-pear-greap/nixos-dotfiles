@@ -11,14 +11,21 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/core.nix
-    ../../modules/intel.nix
     inputs.daeuniverse.nixosModules.dae
   ];
 
+  my.input.enable = true;
+  my.audio.enable = true;
+  my.fonts.enable = true;
+  my.bluetooth.enable = true;
+  my.ssh.enable = true;
+  my.graphics.intel.enable = true;
+  my.gaming.enable = true;
+
   my.x11 = {
-      enable = true;
-      wm = "dwm";
-    };
+    enable = true;
+    wm = "dwm";
+  };
   my.wayland.enable = false;
 
   zramSwap.enable = true;
@@ -40,30 +47,13 @@
 
   # Enable the X11 windowing system.
 
-  powerManagement.enable = true;
-  services.power-profiles-daemon.enable = false;
-  services.tlp = {
+  my.power = {
     enable = true;
-    settings = {
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-
-      CPU_MIN_PERF_ON_AC = 0;
-      CPU_MAX_PERF_ON_AC = 100;
-      CPU_MIN_PERF_ON_BAT = 0;
-      CPU_MAX_PERF_ON_BAT = 20;
-
-      # Optional helps save long term battery health
-      START_CHARGE_THRESH_BAT0 = 70; # 40 and below it starts to charge
-      STOP_CHARGE_THRESH_BAT0 = 95; # 80 and above it stops charging
-    };
+    profile = "powersave";
   };
-
-  programs.steam = {
-    enable = true;
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 70;
+    STOP_CHARGE_THRESH_BAT0 = 95;
   };
 
   programs.localsend = {

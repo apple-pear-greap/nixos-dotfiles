@@ -8,6 +8,7 @@
 {
   imports = [
     ../../home-modules/core.nix
+    ../../home-modules/kitty.nix
   ];
   my.hm.x11 = {
     enable = true;
@@ -18,19 +19,4 @@
     wm = "sway";
   };
 
-  programs.kitty = {
-    enable = true;
-    themeFile = "Dracula";
-    font = {
-      name = "JetBrainsMonoNL NFP";
-      size = 14;
-    };
-    settings = {
-      cursor_trail = 1;
-      cursor_trail_decay = "0.1 0.3";
-      cursor_trail_start_threshold = 3;
-
-      background_opacity = 0.8;
-    };
-  };
 }

@@ -8,6 +8,7 @@
 {
   imports = [
     ../../home-modules/core.nix
+    ../../home-modules/kitty.nix
   ];
   my.hm.x11.enable = false;
   my.hm.wayland = {

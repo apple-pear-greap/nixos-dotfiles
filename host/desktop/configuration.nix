@@ -11,9 +11,19 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/core.nix
-    ../../modules/nvidia.nix
-    inputs.aagl.nixosModules.default
   ];
+
+  my.input.enable = true;
+  my.audio.enable = true;
+  my.fonts.enable = true;
+  my.bluetooth.enable = true;
+  my.ssh.enable = true;
+  my.graphics.nvidia.enable = true;
+  my.gaming = {
+    enable = true;
+    performance.enable = true;
+    aagl.enable = true;
+  };
 
   my.x11.enable = false;
   my.wayland = {
@@ -38,44 +48,14 @@
 
   programs.kdeconnect.enable = true;
 
-  services.power-profiles-daemon.enable = false;
-  services.tlp = {
+  my.power = {
     enable = true;
-    settings = {
-      START_CHARGE_THRESH_BAT0 = 40;
-      STOP_CHARGE_THRESH_BAT0 = 85;
-
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_MIN_PERF_ON_AC = 0;
-      CPU_MAX_PERF_ON_AC = 100;
-      CPU_BOOST_ON_AC = 1;
-      CPU_HWP_DYN_BOOST_ON_AC = 1;
-      PLATFORM_PROFILE_ON_AC = "performance";
-    };
+    profile = "performance";
   };
-
-  programs.steam = {
-    enable = true;
-    extraCompatPackages = with pkgs; [
-      pkgs-unstable.dwproton-bin
-      pkgs-unstable.proton-ge-bin
-    ];
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 40;
+    STOP_CHARGE_THRESH_BAT0 = 85;
   };
-  programs.gamemode.enable = true;
-
-  # 配置 Cachix，避免自行编译启动器
-  nix.settings = inputs.aagl.nixConfig;
-
-  # 启用你需要的启动器
-  programs.anime-game-launcher.enable = true;
-  programs.honkers-railway-launcher.enable = true;
-  programs.sleepy-launcher.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    wineWow64Packages.stable
-    winetricks
-  ];
 
   services.tailscale.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -85,6 +65,8 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlpSnpK/ZKhqcGP3ibhlQjJI76udTF7bfiuupjp5P1F yoko64946@gmail.com"
     ];
   };
+
+  system.stateVersion = "26.05";
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
