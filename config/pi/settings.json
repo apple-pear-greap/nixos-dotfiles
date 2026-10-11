@@ -1,0 +1,15 @@
+{
+  "lastChangelogVersion": "1.0.3",
+  "deviceId": "7b2e44e3-8d2e-47de-8759-99ab9a6703ca",
+  "packages": [
+    "npm:@juicesharp/rpiv-web-tools",
+    "npm:pi-context-view",
+    "npm:@narumitw/pi-btw",
+    "npm:pi-jingle"
+  ],
+  "sounds": {
+    "agent_end": "./sounds/ocarina-of-time-secret.mp3"
+  },
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6.1-sol"
+}
