@@ -7,5 +7,8 @@
     ./wayland.nix
     ./audio-switch.nix
     ./notifications.nix
+    ./polkit-agent.nix
+    ./screen-lock.nix
+    ./media-controls.nix
   ];
 }

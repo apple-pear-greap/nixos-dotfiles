@@ -26,6 +26,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Home Manager installs swaylock-effects; authentication is configured here.
+    security.pam.services.swaylock = { };
     services.xserver.displayManager.lightdm.enable = false;
     services.displayManager.ly.enable = true;
     xdg.portal = {

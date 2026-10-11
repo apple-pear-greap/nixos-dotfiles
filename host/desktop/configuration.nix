@@ -63,6 +63,7 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO//GYtVPFgC08ziOwn+8+ZwJqOcIwGkemNZJYFJjZ/a hysilens@csu.edu.cn"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlpSnpK/ZKhqcGP3ibhlQjJI76udTF7bfiuupjp5P1F yoko64946@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLsXLE5ZZrqx0p2GYU+oMQmMUfM1gs7e3IivkrwR9UW u0_a291@localhost"
     ];
   };
 

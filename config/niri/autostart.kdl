@@ -1,0 +1,5 @@
+spawn-at-startup "~/nixos-config/config/waybar/waybar-launcher.sh" "niri"
+spawn-sh-at-startup "swaybg -i ~/nixos-config/wallpapers/VodOdetta.jpg"
+spawn-at-startup "foot" "-s"
+spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
+spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
