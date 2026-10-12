@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Codex allowance from ChatGPT OAuth; never prints or stores credentials.
+
+Uses an undocumented endpoint. Does not refresh tokens or modify auth files:
+re-login in the original client if authentication expires. --details shows
+local reset timestamps; --refresh bypasses the 5-minute usage cache.
+"""
+
+import argparse
+import base64
+import fcntl
+import json
+import os
+from pathlib import Path
+import time
+import urllib.error
+import urllib.request
+from datetime import datetime
+
+ENDPOINT = "https://chatgpt.com/backend-api/wham/usage"
+CACHE_SECONDS = 300
+
+
+def jwt_account(token):
+    try:
+        payload = token.split(".")[1]
+        claims = json.loads(base64.urlsafe_b64decode(payload + "=" * (-len(payload) % 4)))
+        return claims.get("https://api.openai.com/auth", {}).get("chatgpt_account_id")
+    except (ValueError, IndexError, TypeError):
+        return None
+
+
+def credentials():
+    home = Path.home()
+    candidates = [
+        (Path(os.environ.get("CODEX_HOME", home / ".codex")) / "auth.json", "codex"),
+        (Path(os.environ.get("PI_CODING_AGENT_DIR", home / ".pi/agent")) / "auth.json", "pi"),
+    ]
+    for path, client in candidates:
+        try:
+            auth = json.loads(path.read_text())
+            if client == "pi":
+                auth = auth.get("openai-codex") or auth.get("openai") or {}
+                token = auth.get("access")
+                account = auth.get("accountId") or jwt_account(token or "")
+            else:
+                auth = auth.get("tokens") or {}
+                token = auth.get("access_token")
+                account = auth.get("account_id") or jwt_account(auth.get("id_token") or token or "")
+            if isinstance(token, str) and token:
+                return token, account if isinstance(account, str) else None
+        except (OSError, ValueError, AttributeError):
+            continue
+    return None
+
+
+def fetch_usage(token, account):
+    headers = {
+        "Authorization": "Bearer " + token,
+        "Accept": "application/json",
+        "User-Agent": "sb-chatgpt/1.0",
+    }
+    if account:
+        headers["ChatGPT-Account-Id"] = account
+    request = urllib.request.Request(ENDPOINT, headers=headers)
+    # Do not follow redirects with OAuth headers to another endpoint.
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            return None
+    with urllib.request.build_opener(NoRedirect).open(request, timeout=8) as response:
+        usage = json.load(response)
+    rate = usage.get("rate_limit")
+    if not isinstance(rate, dict):
+        raise ValueError("Unsupported response")
+    windows = []
+    for key in ("primary_window", "secondary_window"):
+        window = rate.get(key)
+        if not isinstance(window, dict):
+            continue
+        used = float(window["used_percent"])
+        seconds = int(window["limit_window_seconds"])
+        reset = int(window.get("reset_at") or (time.time() + int(window["reset_after_seconds"])))
+        windows.append({"seconds": seconds, "remaining": max(0, min(100, 100 - used)), "reset": reset})
+    if not windows:
+        raise ValueError("No usage windows")
+    # Only retain the allowance data, never response account details or tokens.
+    return {"fetched": int(time.time()), "windows": windows}
+
+
+def duration(seconds):
+    minutes = max(0, (int(seconds) + 59) // 60)
+    if minutes >= 1440:
+        return f"{minutes // 1440}d{minutes % 1440 // 60}h"
+    if minutes >= 60:
+        return f"{minutes // 60}h{minutes % 60:02d}m"
+    return f"{minutes}m"
+
+
+def format_usage(data, details=False, now=None):
+    now = time.time() if now is None else now
+    parts = []
+    for window in sorted(data["windows"], key=lambda item: item["seconds"]):
+        seconds = window["seconds"]
+        label = "7d" if seconds == 604800 else duration(seconds).removesuffix("00m")
+        # A passed reset time isn't evidence of a refreshed allowance.
+        reset = window["reset"]
+        when = datetime.fromtimestamp(reset).strftime("%m-%d %H:%M") if details else duration(reset - now)
+        if reset <= now:
+            when = "pending"
+        parts.append(f"{label}:{window['remaining']:.0f}%@{when}")
+    return "Codex " + " ".join(parts)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--details", action="store_true")
+    parser.add_argument("--refresh", action="store_true")
+    args = parser.parse_args()
+    cache_dir = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "sb-chatgpt"
+    cache_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    cache_file = cache_dir / "usage.json"
+    with (cache_dir / "lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            cached = json.loads(cache_file.read_text())
+            # Validate cached data before using it.
+            if cached.get("data"):
+                format_usage(cached["data"])
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            cached = {}
+        if args.refresh or time.time() - cached.get("checked", 0) >= CACHE_SECONDS:
+            auth = credentials()
+            status = "login" if not auth else ""
+            data = cached.get("data")
+            if auth:
+                try:
+                    data = fetch_usage(*auth)
+                except urllib.error.HTTPError as error:
+                    status = "login" if error.code == 401 else f"HTTP{error.code}"
+                except (OSError, ValueError, KeyError, TypeError, AttributeError):
+                    status = "offline"
+            cached = {"checked": int(time.time()), "status": status, "data": data}
+            temp = cache_dir / "usage.tmp"
+            temp.write_text(json.dumps(cached))
+            temp.chmod(0o600)
+            temp.replace(cache_file)
+        status = cached.get("status", "")
+        data = cached.get("data")
+        if data:
+            stale = status or ("stale" if time.time() - data["fetched"] > CACHE_SECONDS * 2 else "")
+            print(format_usage(data, args.details) + (f" [{stale}]" if stale else ""))
+        else:
+            print("Codex " + (status or "N/A"))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except OSError:
+        print("Codex unavailable")

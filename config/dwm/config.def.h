@@ -10,16 +10,25 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int showtab            = 1;        /* 0 means no tabbar */
+static const int alltab             = 1;        /* 1 means show tabbar whenever enabled */
+static const int toptab             = 1;        /* 1 means top tab bar */
 static const char *fonts[]          = { "Maple Mono NF CN:size=12" };
 static const char dmenufont[]       = "JetBrainsMono NF:size=12";
 static const char col_1[]  = "#1a1b26"; /* background color of bar */
 static const char col_2[]  = "#444b6a"; /* border color unfocused windows */
 static const char col_3[]  = "#a9b1d6";
 static const char col_4[]  = "#ad8ee6"; /* border color focused windows and tags */
+static const char tab_norm_fg[] = "#7aa2f7";
+static const char tab_norm_bg[] = "#24283b";
+static const char tab_sel_fg[]  = "#1a1b26";
+static const char tab_sel_bg[]  = "#7aa2f7";
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_3, col_1, col_2 },
-	[SchemeSel]  = { col_3, col_2, col_4 },
+	/*                  fg           bg           border   */
+	[SchemeNorm]    = { col_3,       col_1,       col_2       },
+	[SchemeSel]     = { col_3,       col_2,       col_4       },
+	[SchemeTabNorm] = { tab_norm_fg, tab_norm_bg, tab_norm_bg },
+	[SchemeTabSel]  = { tab_sel_fg,  tab_sel_bg,  tab_sel_bg  },
 };
 
 static const char *const autostart[] = {
@@ -79,6 +88,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_w,      toggletab,      {0} }, // tab
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -128,5 +138,6 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTabBar,            0,              Button1,        focuswin,       {0} }, // tab mode
 };
 
