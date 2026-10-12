@@ -7,13 +7,25 @@
 with lib;
 let
   cfg = config.my.hm.x11;
+  chatgptBlock = pkgs.writeShellApplication {
+    name = "sb-chatgpt";
+    runtimeInputs = [ pkgs.python3 ];
+    text = ''
+      exec python3 ${../../../scripts/sb-chatgpt} "$@"
+    '';
+  };
 in
 {
   config = mkIf (cfg.enable && cfg.wm == "dwm") {
     home.packages = with pkgs; [
-      (pkgs.st.overrideAttrs (_: {
+      chatgptBlock
+      (pkgs.st.overrideAttrs (oldAttrs: {
         src = ../../../config/st;
         patches = [ ];
+        buildInputs = (oldAttrs.buildInputs or [ ]) ++ [
+          imlib2
+          zlib
+        ];
       }))
       (pkgs.dmenu.overrideAttrs (_: {
         src = ../../../config/dmenu;

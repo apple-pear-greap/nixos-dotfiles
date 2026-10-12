@@ -19,6 +19,7 @@
 ```nix
 my.hm.kitty.enable = true;
 my.hm.mpv.enable = false; # 默认关闭
+my.hm.spotify.enable = false; # 默认关闭
 my.hm.wayland = {
   enable = true;
   wm = "niri";

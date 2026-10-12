@@ -170,6 +170,18 @@ is_pos_int() {
     return 1 # false
 }
 
+# Query tmux directly instead of sending CSI 16t through its passthrough mode.
+# The terminal response is delivered to the active pane, while preview-tui
+# creates the preview as an inactive pane, causing icat-mini to wait forever.
+if [ -z "$cell_size" ] && [ -n "$inside_tmux" ]; then
+    tmux_cell_size="$(tmux display-message -p '#{client_cell_width}x#{client_cell_height}')"
+    tmux_cell_width="${tmux_cell_size%x*}"
+    tmux_cell_height="${tmux_cell_size#*x}"
+    if is_pos_int "$tmux_cell_width" && is_pos_int "$tmux_cell_height"; then
+        cell_size="$tmux_cell_size"
+    fi
+fi
+
 if [ -n "$cols" ] || [ -n "$rows" ]; then
     if [ -n "$max_cols" ] || [ -n "$max_rows" ]; then
         echo "You can't specify both max-cols/rows and cols/rows" >&2
@@ -354,14 +366,14 @@ is_format_supported() {
     arg_format="$1"
     if [ "$arg_format" = "PNG" ]; then
         return 0
-    elif [ "$arg_format" = "JPEG" ]; then
+    elif [ "$arg_format" = "JPEG" ] || [ "$arg_format" = "WEBP" ]; then
         if [ -z "$inside_tmux" ]; then
             actual_term="$TERM"
         else
             # Get the actual current terminal name from tmux.
             actual_term="$(tmux display-message -p "#{client_termname}")"
         fi
-        # st is known to support JPEG.
+        # The st graphics patch uses Imlib2 and supports JPEG and WebP.
         case "$actual_term" in
             st | *-st | st-* | *-st-*)
                 return 0
